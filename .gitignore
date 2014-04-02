@@ -1,3 +1,7 @@
 *.asset
 Library/
 Temp/
+*.meta
+*.sln
+*.userprefs
+*.csproj
