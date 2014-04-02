@@ -3,12 +3,15 @@ using System.Collections;
 
 public class FreezeBase : MonoBehaviour {
 	
-	public bool isFrozen = false;
+	public bool isFrozen = true;
 	Rigidbody2D self;
 	Vector3 velocity;
 	Vector3 location;
 	void Start(){
 		self = gameObject.rigidbody2D;
+		location = transform.position;
+		velocity = self.velocity;
+
 	}
 
 	public void Freeze(){
