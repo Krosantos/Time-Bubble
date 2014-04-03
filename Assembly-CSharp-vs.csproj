@@ -49,6 +49,7 @@
      <Compile Include="Assets\FreezeDemo\Scripts\BubbleEdge.cs" />
      <Compile Include="Assets\FreezeDemo\Scripts\FreezeBase.cs" />
      <Compile Include="Assets\FreezeDemo\Scripts\FreezeDemo.cs" />
+     <Compile Include="Assets\FreezeDemo\Scripts\LeftRight.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
