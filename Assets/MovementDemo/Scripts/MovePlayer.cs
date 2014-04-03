@@ -6,8 +6,7 @@ public class MovePlayer : MonoBehaviour{
 	public float gravity = -25f;
 	public float speed = 10f;
 	public float jumpspeed = 3f;
-	public float groundaccel = .5f;
-	public float airaccel = .1f;
+	public float accel = .5f;
 
 	private CharacterController2D controller;
 	private Vector3 velocity;
@@ -41,9 +40,7 @@ public class MovePlayer : MonoBehaviour{
 			if (transform.localScale.x < 0f) ReverseXScale();
 		}else xmove = 0f;
 
-		Debug.Log (xmove);
-
-		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * groundaccel);
+		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 
 		velocity.y += gravity * Time.deltaTime;
 
