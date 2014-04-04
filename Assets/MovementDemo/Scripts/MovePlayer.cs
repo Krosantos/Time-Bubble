@@ -8,8 +8,10 @@ public class MovePlayer : MonoBehaviour{
 	public float jumpspeed = 3f;
 	public float accel = .5f;
 	public float jumplength = .5f;
-
-	private CharacterController2D controller;
+	public Transform groundchecker;
+	public Transform wallchecker;
+	public LayerMask whatisground;
+	
 	private Vector3 velocity;
 	private float xmove;
 	private float jumptimer;
@@ -18,17 +20,17 @@ public class MovePlayer : MonoBehaviour{
 
 	// Use this for initialization
 	void Awake () {
-		controller = GetComponent<CharacterController2D>();
 		jumptimer = jumplength;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		velocity = controller.velocity;
+		velocity = rigidbody2D.velocity;
+		xmove = 0f;
 
-		if (controller.isGrounded) velocity.y = 0f;
+		if (IsGrounded()) velocity.y = 0f;
 
-		if (Input.GetKeyDown(up) && controller.isGrounded){
+		if (Input.GetKeyDown(up) && IsGrounded()){
 			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
 			jumptimer = 0f;
 		}else if(Input.GetKey(up) && jumptimer < jumplength){
@@ -40,27 +42,35 @@ public class MovePlayer : MonoBehaviour{
 			jumptimer = jumplength;
 		}
 
-
-		if (Input.GetKey(down) && !controller.isGrounded){
+		if (Input.GetKey(down) && !IsGrounded()){
 			velocity.y = gravity;
 		}
 		if (Input.GetKey(left)){
-			xmove = -1f;
 			if (transform.localScale.x > 0f) ReverseXScale();
+			if (!IsFacingWall()) xmove = -1f;
 		}
 		else if (Input.GetKey(right)){
-			xmove = 1f;
 			if (transform.localScale.x < 0f) ReverseXScale();
-		}else xmove = 0f;
+			if (!IsFacingWall()) xmove = 1f;
+		}
 
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 
 		velocity.y += gravity * Time.deltaTime;
 
-		controller.move(velocity * Time.deltaTime);
+		rigidbody2D.velocity = velocity;
+	}
+
+	private bool IsGrounded(){
+		return Physics2D.OverlapCircle(groundchecker.position, 0.1f, whatisground);
+	}
+
+	private bool IsFacingWall(){
+		return Physics2D.OverlapCircle(wallchecker.position, 0.2f, whatisground);
 	}
 
 	private void ReverseXScale(){
 		transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
 	}
+	
 }
