@@ -7,16 +7,19 @@ public class MovePlayer : MonoBehaviour{
 	public float speed = 10f;
 	public float jumpspeed = 3f;
 	public float accel = .5f;
+	public float jumplength = .5f;
 
 	private CharacterController2D controller;
 	private Vector3 velocity;
 	private float xmove;
+	private float jumptimer;
 
 	public KeyCode up, down, left, right;
 
 	// Use this for initialization
 	void Awake () {
 		controller = GetComponent<CharacterController2D>();
+		jumptimer = jumplength;
 	}
 	
 	// Update is called once per frame
@@ -27,7 +30,12 @@ public class MovePlayer : MonoBehaviour{
 
 		if (Input.GetKeyDown(up) && controller.isGrounded){
 			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
+			jumptimer = 0f;
+		}else if(Input.GetKey(up) && jumptimer < jumplength){
+			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
+			jumptimer += Time.deltaTime;
 		}
+
 		if (Input.GetKey(down) && !controller.isGrounded){
 			velocity.y = gravity;
 		}
