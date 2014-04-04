@@ -36,6 +36,11 @@ public class MovePlayer : MonoBehaviour{
 			jumptimer += Time.deltaTime;
 		}
 
+		if(Input.GetKeyUp(up) && jumptimer < jumplength){
+			jumptimer = jumplength;
+		}
+
+
 		if (Input.GetKey(down) && !controller.isGrounded){
 			velocity.y = gravity;
 		}
