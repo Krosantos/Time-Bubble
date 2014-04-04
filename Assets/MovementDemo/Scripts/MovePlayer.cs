@@ -8,10 +8,8 @@ public class MovePlayer : MonoBehaviour{
 	public float jumpspeed = 3f;
 	public float accel = .5f;
 	public float jumplength = .5f;
-	public Transform groundchecker;
-	public Transform wallchecker;
-	public LayerMask whatisground;
-	
+
+	private CharacterController controller;
 	private Vector3 velocity;
 	private float xmove;
 	private float jumptimer;
@@ -20,17 +18,18 @@ public class MovePlayer : MonoBehaviour{
 
 	// Use this for initialization
 	void Awake () {
+		controller = GetComponent<CharacterController>();
 		jumptimer = jumplength;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		velocity = rigidbody2D.velocity;
+		velocity = controller.velocity;
 		xmove = 0f;
 
-		if (IsGrounded()) velocity.y = 0f;
+		if (controller.isGrounded) velocity.y = 0f;
 
-		if (Input.GetKeyDown(up) && IsGrounded()){
+		if (Input.GetKeyDown(up) && controller.isGrounded){
 			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
 			jumptimer = 0f;
 		}else if(Input.GetKey(up) && jumptimer < jumplength){
@@ -42,31 +41,23 @@ public class MovePlayer : MonoBehaviour{
 			jumptimer = jumplength;
 		}
 
-		if (Input.GetKey(down) && !IsGrounded()){
+		if (Input.GetKey(down) && !controller.isGrounded){
 			velocity.y = gravity;
 		}
 		if (Input.GetKey(left)){
 			if (transform.localScale.x > 0f) ReverseXScale();
-			if (!IsFacingWall()) xmove = -1f;
+			xmove = -1f;
 		}
 		else if (Input.GetKey(right)){
 			if (transform.localScale.x < 0f) ReverseXScale();
-			if (!IsFacingWall()) xmove = 1f;
+			xmove = 1f;
 		}
 
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 
 		velocity.y += gravity * Time.deltaTime;
 
-		rigidbody2D.velocity = velocity;
-	}
-
-	private bool IsGrounded(){
-		return Physics2D.OverlapCircle(groundchecker.position, 0.1f, whatisground);
-	}
-
-	private bool IsFacingWall(){
-		return Physics2D.OverlapCircle(wallchecker.position, 0.2f, whatisground);
+		controller.Move(velocity*Time.deltaTime);
 	}
 
 	private void ReverseXScale(){

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DestroyOnCollision : MonoBehaviour {
 
-	void OnCollisionEnter2D(){
+	void OnCollisionEnter(){
 		Destroy(gameObject);
 	}
 }

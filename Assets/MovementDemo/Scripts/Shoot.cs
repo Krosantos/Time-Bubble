@@ -6,24 +6,30 @@ public class Shoot : MonoBehaviour {
 	public GameObject projectile;
 	public float shootspeed = 100f;
 	public float shootoffset = 2f;
-	public float bulletlifetime = 1f;
+	public bool automatic = false;
+	public float rate = .5f;
 
-	// Use this for initialization
-	void Start () {
+	private float timer = 0f;
 	
-	}
-	
-	// Update is called once per frame
 	void Update () {
 
-		//RaycastHit hit = new RaycastHit();
-		//if(Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit)){
-			// use hit.point here to make something look at mouse (gun?)
-			if (Input.GetMouseButtonDown(0)){
-				ShootAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-			}
-//		}
+		if (Input.GetMouseButtonDown(0)){
+			ShootAtMouse();
+			timer = 0f;
+		}
 
+		if (Input.GetMouseButton(0) && automatic){
+			timer += Time.deltaTime;
+			if (timer > rate){
+				ShootAtMouse();
+				timer = 0f;
+			}
+		}
+
+	}
+
+	void ShootAtMouse(){
+		ShootAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 	}
 
 	void ShootAt(Vector3 target){
@@ -40,8 +46,8 @@ public class Shoot : MonoBehaviour {
 
 		newprojectile.transform.rotation = Quaternion.Euler(0f,0f,angle-90f);
 
-		newprojectile.rigidbody2D.velocity = ((direction + .025f * (Vector3)Random.insideUnitCircle).normalized * shootspeed);
+		newprojectile.rigidbody.velocity = ((direction + .025f * (Vector3)Random.insideUnitCircle).normalized * shootspeed);
 
-		Destroy(newprojectile, bulletlifetime);
 	}
+
 }
