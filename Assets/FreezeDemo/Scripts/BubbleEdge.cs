@@ -5,7 +5,7 @@ public class BubbleEdge : MonoBehaviour {
 
 	public FreezeBase target;
 
-	void OnTriggerEnter2D(Collider2D other){
+	void OnTriggerEnter(Collider other){
 		if(other.GetComponent<FreezeBase>() != null){
 			other.GetComponent<FreezeBase>().Unfreeze();
 			Debug.Log ("Boop!");
@@ -15,7 +15,7 @@ public class BubbleEdge : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D other){
+	void OnTriggerExit(Collider other){
 		if(other.GetComponent<FreezeBase>() != null){
 			other.GetComponent<FreezeBase>().Freeze();
 		}

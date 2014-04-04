@@ -4,12 +4,12 @@ using System.Collections;
 public class FreezeBase : MonoBehaviour {
 	
 	public bool isFrozen;
-	Rigidbody2D self;
+	Rigidbody self;
 	Vector3 velocity;
 	Vector3 location;
 	void Start(){
-		isFrozen = true;
-		self = gameObject.rigidbody2D;
+		//isFrozen = true;
+		self = gameObject.rigidbody;
 		location = transform.position;
 		velocity = self.velocity;
 
@@ -27,14 +27,14 @@ public class FreezeBase : MonoBehaviour {
 	public void Unfreeze(){
 		if(isFrozen){
 			isFrozen = false;
-			self.gravityScale = 1;
+			self.useGravity = true;
 			self.velocity = velocity;
 		}
 	}
 
 	void Update(){
 		if(isFrozen){
-			self.gravityScale = 0;
+			self.useGravity = false;
 			transform.position = location;
 			Debug.Log ("I AM FROZEN");
 		}

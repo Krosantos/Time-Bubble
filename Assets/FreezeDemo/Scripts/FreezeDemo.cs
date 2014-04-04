@@ -12,7 +12,8 @@ public class FreezeDemo : MonoBehaviour {
 		
 		// Casts the ray and get the first game object hit
 		if (Physics.Raycast (ray, out hit, rayLength)){
-			transform.position = hit.point;
+			Vector3 target = new Vector3(hit.point.x, hit.point.y, 0f);
+			transform.position = target;
 		}
 
 		if(Input.GetKey(KeyCode.UpArrow)){
