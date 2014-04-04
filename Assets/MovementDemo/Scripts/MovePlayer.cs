@@ -29,7 +29,7 @@ public class MovePlayer : MonoBehaviour{
 			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
 		}
 		if (Input.GetKey(down) && !controller.isGrounded){
-			velocity.y = -Mathf.Sqrt(2f * jumpspeed * -gravity);
+			velocity.y = gravity;
 		}
 		if (Input.GetKey(left)){
 			xmove = -1f;
