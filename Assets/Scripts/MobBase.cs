@@ -12,9 +12,9 @@ public class MobBase : MonoBehaviour {
 	private bool isFighting;
 
 	private CharacterController controller;
-	private Vector2 velocity;
-	private Vector2 target;
-	private Vector2 temp;
+	private Vector3 velocity;
+	private Vector3 target;
+	private Vector3 temp;
 	private float _speed;
 	private float _accel;
 	private float xmove;
@@ -57,9 +57,16 @@ public class MobBase : MonoBehaviour {
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
 		controller = GetComponent<CharacterController>();
+		StartCoroutine ("updateState");
 	}
 
 	void Update(){
+
+		//Check for death
+		if(health <= 0){
+			Destroy (gameObject);
+		}
+
 		//Reset move variables
 		velocity = controller.velocity;
 		xmove = 0f;
@@ -82,7 +89,7 @@ public class MobBase : MonoBehaviour {
 		//Move to movetarget
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
-		
+		Debug.Log (xmove + ", " + ymove);
 		controller.Move(velocity*Time.deltaTime);
 	}
 
@@ -112,6 +119,7 @@ public class MobBase : MonoBehaviour {
 		for(;;){
 			xmove = Random.Range(-1f,1f);
 			ymove = Random.Range(-1f,1f);
+			//Debug.Log ("Random Idle");
 			yield return new WaitForSeconds(1.5f);
 		}
 	}
@@ -122,22 +130,27 @@ public class MobBase : MonoBehaviour {
 		//TODO:Contemplate Fleeing
 		if(!Calc.isInRange (gameObject, player, detectRange)){
 			isFighting = false;
+			//Debug.Log ("IDLE");
 			return AIStates.Idle;
-		}
-		else if(isFighting && Calc.isInRange (gameObject, player, detectRange)){
-			isFighting = true;
-			return AIStates.Pursue;
 		}
 		else if(Calc.isInRange (gameObject, player, targetRange) && !Calc.isInRange(gameObject, player, engageRange)){
 			isFighting = true;
+			//Debug.Log ("CHASE");
 			return AIStates.Pursue;
 		}
 		else if(Calc.isInRange (gameObject, player, engageRange)){
 			isFighting = true;
+			Debug.Log("ATTACK");
 			return AIStates.Attack;
+		}
+		else if(isFighting && Calc.isInRange (gameObject, player, detectRange)){
+			isFighting = true;
+			//Debug.Log ("CHASE");
+			return AIStates.Pursue;
 		}
 		else{
 			isFighting = false;
+			//Debug.Log("IDLE BUT BAD IDLE");
 			return AIStates.Idle;
 		}
 	}
@@ -145,7 +158,7 @@ public class MobBase : MonoBehaviour {
 	IEnumerator updateState(){
 		for(;;){
 			AIState = calcState (gameObject, player, detectRange, targetRange, engageRange);
-			yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(0.5f);
 		}
 	}
 	#endregion

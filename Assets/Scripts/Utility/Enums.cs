@@ -9,3 +9,9 @@ public enum AIStates{
 	Attack,
 	Flee
 }
+
+public enum AttackStyles{
+	Kamikaze,
+	Melee,
+	Ranged
+}
