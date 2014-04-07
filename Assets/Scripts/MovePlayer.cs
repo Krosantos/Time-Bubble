@@ -6,6 +6,8 @@ public class MovePlayer : MonoBehaviour{
 	public float speed = 10f;
 	public float jumpspeed = 3f;
 	public float accel = .5f;
+	
+	public bool hasKey;
 
 	private CharacterController controller;
 	private Vector3 velocity;
@@ -15,8 +17,9 @@ public class MovePlayer : MonoBehaviour{
 	public KeyCode up, down, left, right;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		controller = GetComponent<CharacterController>();
+		hasKey = false;
 	}
 	
 	// Update is called once per frame
