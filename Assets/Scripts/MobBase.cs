@@ -74,7 +74,7 @@ public class MobBase : MonoBehaviour {
 		//Determine movetarget
 		switch (AIState){
 		case AIStates.Idle:
-			Idle();
+			//Idle();
 			break;
 		case AIStates.Pursue:
 			Pursue();
