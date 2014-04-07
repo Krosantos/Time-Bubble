@@ -46,7 +46,7 @@ public class Shoot : MonoBehaviour {
 
 		newprojectile.transform.rotation = Quaternion.Euler(0f,0f,angle-90f);
 
-		newprojectile.rigidbody.velocity = Time.deltaTime * 50f * ((direction + .025f * (Vector3)Random.insideUnitCircle).normalized * shootspeed);
+		newprojectile.rigidbody.velocity = ((direction + .025f * (Vector3)Random.insideUnitCircle).normalized * shootspeed);
 
 	}
 
