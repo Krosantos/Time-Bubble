@@ -12,4 +12,11 @@ public class Calc : MonoBehaviour {
 		if(distance<maxDistance) return true;
 		else return false;
 	}
+
+	public static float getRangeFrom(GameObject self, GameObject target){
+		Vector3 position = self.transform.position;
+		Vector3 difference = target.transform.position-position;
+		float distance = difference.sqrMagnitude;
+		return distance;
+	}
 }
