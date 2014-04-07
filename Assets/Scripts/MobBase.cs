@@ -119,7 +119,7 @@ public class MobBase : MonoBehaviour {
 	}
 	#endregion
 	#region State Calculation
-	AIStates calcState(float detectRange, float targetRange, float engageRange){
+	AIStates calcState(){
 		//Determines an AI's current state
 		//TODO:Contemplate Fleeing
 
@@ -158,7 +158,7 @@ public class MobBase : MonoBehaviour {
 
 	IEnumerator updateState(){
 		for(;;){
-			AIState = calcState (gameObject, player, detectRange, targetRange, engageRange);
+			AIState = calcState ();
 			yield return new WaitForSeconds(.5f);
 		}
 	}
