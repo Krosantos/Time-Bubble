@@ -1,0 +1,3 @@
+Sword, 10
+Mace, 13
+CattleProd, 8
