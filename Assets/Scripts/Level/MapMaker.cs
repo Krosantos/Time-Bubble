@@ -10,6 +10,7 @@ public class MapMaker : MonoBehaviour {
 	public GameObject door;
 	public GameObject player;
 	public GameObject key;
+	public GameObject enemy;
 
 	public float turnchance = .1f;
 	public float turnaroundchance = .05f;
@@ -22,6 +23,9 @@ public class MapMaker : MonoBehaviour {
 	public int maxFloorMakers = 20;
 
 	public int iterations = 112;
+
+	public float minEnemyDistance = 5f;
+	public float enemySpawnRate = .1f;  // likelihood of enemy spawning at any given floor tile
 
 	public List<FloorMaker> floorMakers = new List<FloorMaker>();
 
@@ -140,10 +144,18 @@ public class MapMaker : MonoBehaviour {
 					Vector2 tileposition = tilemap[i,j].tile.transform.position;
 					float tileDistanceFromSpawn = ((Vector2)tileposition - (Vector2)startTile.transform.position).magnitude;
 					float tileDistanceFromDoor = ((Vector2)tileposition - (Vector2)newDoor.transform.position).magnitude;
-					if (tileDistanceFromSpawn >= distanceFromSpawn && tileDistanceFromDoor >= distanceFromDoor){
+
+					if ((tileDistanceFromSpawn > distanceFromSpawn) && (tileDistanceFromDoor > distanceFromDoor)){
 						distanceFromSpawn = tileDistanceFromSpawn;
 						distanceFromDoor = tileDistanceFromDoor;
 						keyPosition = tileposition;
+					}
+
+					if (distanceFromSpawn > minEnemyDistance){
+						float r = Random.Range(0f,1f);
+						if (r < enemySpawnRate){
+							Instantiate(enemy, tileposition, Quaternion.identity);
+						}
 					}
 				}
 			}
