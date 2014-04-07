@@ -10,7 +10,8 @@ public class MobBase : MonoBehaviour {
 	private float _engageRange; //Range mob tries to fight at
 	private AIStates AIState;
 	private bool isFighting;
-	
+
+	CharacterController controller;
 	private Vector3 velocity;
 	private Vector3 target;
 	private Vector3 temp;
@@ -54,6 +55,7 @@ public class MobBase : MonoBehaviour {
 	#endregion
 
 	void Start(){
+		controller = GetComponent<CharacterController>();
 		player = GameObject.FindGameObjectWithTag("Player");
 		StartCoroutine ("updateState");
 	}
@@ -66,7 +68,7 @@ public class MobBase : MonoBehaviour {
 		}
 
 		//Reset move variables
-		velocity = rigidbody.velocity;
+		velocity = controller.velocity;
 		xmove = 0f;
 		ymove = 0f;
 
@@ -74,7 +76,7 @@ public class MobBase : MonoBehaviour {
 		//Determine movetarget
 		switch (AIState){
 		case AIStates.Idle:
-			//Idle();
+			Idle();
 			break;
 		case AIStates.Pursue:
 			Pursue();
@@ -88,7 +90,7 @@ public class MobBase : MonoBehaviour {
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
 		Debug.Log (xmove + ", " + ymove);
-		rigidbody.velocity = velocity;
+		controller.Move(velocity*Time.deltaTime);
 	}
 
 	#region State Directions
@@ -115,10 +117,11 @@ public class MobBase : MonoBehaviour {
 
 	IEnumerator IdleCR(){
 		for(;;){
-			xmove = Random.Range(-1f,1f);
-			ymove = Random.Range(-1f,1f);
+			// THESE RANDOMS ARE A PROBLEM
+			//xmove = Random.Range(-1f,1f);
+			//ymove = Random.Range(-1f,1f);
 			//Debug.Log ("Random Idle");
-			yield return new WaitForSeconds(1.5f);
+			yield return new WaitForSeconds(5f);
 		}
 	}
 
