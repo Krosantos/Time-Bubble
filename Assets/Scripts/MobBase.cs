@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MobBase : MonoBehaviour {
 
-	private GameObject player;
+	static private GameObject player;
 	private float _health;
 	private float _detectRange; //Range at which mob loses you
 	private float _targetRange; //Range at which mob aggresses
@@ -11,7 +11,7 @@ public class MobBase : MonoBehaviour {
 	private AIStates AIState;
 	private bool isFighting;
 
-	private CharacterController controller;
+	private CharacterController self;
 	private Vector3 velocity;
 	private Vector3 target;
 	private Vector3 temp;
@@ -53,10 +53,10 @@ public class MobBase : MonoBehaviour {
 		set {_engageRange = value;}
 	}
 	#endregion
-
+	#region Start/Update
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
-		controller = GetComponent<CharacterController>();
+		self = GetComponent<CharacterController>();
 		StartCoroutine ("updateState");
 	}
 
@@ -68,7 +68,7 @@ public class MobBase : MonoBehaviour {
 		}
 
 		//Reset move variables
-		velocity = controller.velocity;
+		velocity = self.velocity;
 		xmove = 0f;
 		ymove = 0f;
 
@@ -76,7 +76,6 @@ public class MobBase : MonoBehaviour {
 		//Determine movetarget
 		switch (AIState){
 		case AIStates.Idle:
-			Idle();
 			break;
 		case AIStates.Pursue:
 			Pursue();
@@ -89,10 +88,10 @@ public class MobBase : MonoBehaviour {
 		//Move to movetarget
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
-		Debug.Log (xmove + ", " + ymove);
-		controller.Move(velocity*Time.deltaTime);
+		//Debug.Log (xmove + ", " + ymove);
+		self.Move(velocity*Time.deltaTime);
 	}
-
+	#endregion
 	#region State Directions
 	void Idle(){
 		StartCoroutine ("IdleCR");
@@ -109,41 +108,39 @@ public class MobBase : MonoBehaviour {
 	void Attack(){
 		StopCoroutine ("IdleCR");
 	}
-	#endregion
-
-	public bool getIsFighting(){
-		return isFighting;
-	}
 
 	IEnumerator IdleCR(){
 		for(;;){
-			xmove = Random.Range(-1f,1f);
-			ymove = Random.Range(-1f,1f);
+			xmove = Random.Range(-3f,3f);
+			ymove = Random.Range(-3f,3f);
 			//Debug.Log ("Random Idle");
-			yield return new WaitForSeconds(1.5f);
+			yield return new WaitForSeconds(5f);
 		}
 	}
-
+	#endregion
 	#region State Calculation
-	AIStates calcState(GameObject self, GameObject player, float detectRange, float targetRange, float engageRange){
+	AIStates calcState(float detectRange, float targetRange, float engageRange){
 		//Determines an AI's current state
 		//TODO:Contemplate Fleeing
-		if(!Calc.isInRange (gameObject, player, detectRange)){
+
+		float distance = Calc.getRangeFrom(gameObject, player);
+
+		if(distance > detectRange){
 			isFighting = false;
 			//Debug.Log ("IDLE");
 			return AIStates.Idle;
 		}
-		else if(Calc.isInRange (gameObject, player, targetRange) && !Calc.isInRange(gameObject, player, engageRange)){
+		else if(distance <= targetRange && distance > engageRange){
 			isFighting = true;
 			//Debug.Log ("CHASE");
 			return AIStates.Pursue;
 		}
-		else if(Calc.isInRange (gameObject, player, engageRange)){
+		else if(distance < engageRange){
 			isFighting = true;
-			Debug.Log("ATTACK");
+			//Debug.Log("ATTACK");
 			return AIStates.Attack;
 		}
-		else if(isFighting && Calc.isInRange (gameObject, player, detectRange)){
+		else if(isFighting && distance < detectRange){
 			isFighting = true;
 			//Debug.Log ("CHASE");
 			return AIStates.Pursue;
@@ -155,10 +152,14 @@ public class MobBase : MonoBehaviour {
 		}
 	}
 
+	public bool getIsFighting(){
+		return isFighting;
+	}
+
 	IEnumerator updateState(){
 		for(;;){
 			AIState = calcState (gameObject, player, detectRange, targetRange, engageRange);
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(.5f);
 		}
 	}
 	#endregion

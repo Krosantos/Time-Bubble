@@ -9,6 +9,6 @@ public class TestMob : MobBase {
 		detectRange = 50f;
 		targetRange = 20f;
 		engageRange = 5f;
-		accel = .75f;
+		accel = .0f;
 	}
 }
