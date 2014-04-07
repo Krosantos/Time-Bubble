@@ -2,60 +2,51 @@
 using System.Collections;
 
 public class MovePlayer : MonoBehaviour{
-
-	public float gravity = -25f;
+	
 	public float speed = 10f;
 	public float jumpspeed = 3f;
 	public float accel = .5f;
-	public float jumplength = .5f;
 
 	private CharacterController controller;
 	private Vector3 velocity;
 	private float xmove;
-	private float jumptimer;
+	private float ymove;
 
 	public KeyCode up, down, left, right;
 
 	// Use this for initialization
 	void Awake () {
 		controller = GetComponent<CharacterController>();
-		jumptimer = jumplength;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		velocity = controller.velocity;
 		xmove = 0f;
+		ymove = 0f;
 
-		if (controller.isGrounded) velocity.y = 0f;
-
-		if (Input.GetKeyDown(up) && controller.isGrounded){
-			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
-			jumptimer = 0f;
-		}else if(Input.GetKey(up) && jumptimer < jumplength){
-			velocity.y = Mathf.Sqrt(2f * jumpspeed * -gravity);
-			jumptimer += Time.deltaTime;
-		}
-
-		if(Input.GetKeyUp(up) && jumptimer < jumplength){
-			jumptimer = jumplength;
-		}
-
-		if (Input.GetKey(down) && !controller.isGrounded){
-			velocity.y = gravity;
-		}
 		if (Input.GetKey(left)){
 			if (transform.localScale.x > 0f) ReverseXScale();
 			xmove = -1f;
 		}
-		else if (Input.GetKey(right)){
+		if (Input.GetKey(right)){
 			if (transform.localScale.x < 0f) ReverseXScale();
 			xmove = 1f;
 		}
+		if (Input.GetKey(up)){
+			ymove = 1f;
+		}
+		if (Input.GetKey(down)){
+			ymove = -1f;
+		}
+
+		if ((Input.GetKey(up) || Input.GetKey(down)) && (Input.GetKey(left) || Input.GetKey(right) )){
+			xmove *= 0.707f;
+			ymove *= 0.707f;
+		}
 
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
-
-		velocity.y += gravity * Time.deltaTime;
+		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
 
 		controller.Move(velocity*Time.deltaTime);
 	}

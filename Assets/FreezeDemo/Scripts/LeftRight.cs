@@ -5,7 +5,6 @@ public class LeftRight : MonoBehaviour {
 
 	Vector2 speed = new Vector2 (-4,0);
 	Rigidbody self;
-	bool isGoingLeft = false;
 
 	void Start(){
 		self = gameObject.GetComponent<Rigidbody>();
