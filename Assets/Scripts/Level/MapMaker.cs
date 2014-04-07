@@ -24,7 +24,7 @@ public class MapMaker : MonoBehaviour {
 
 	public int iterations = 112;
 
-	public float minEnemyDistance = 10f;
+	public float minEnemyDistance = 15f;
 	public float enemySpawnRate = .1f;  // likelihood of enemy spawning at any given floor tile
 
 	public List<FloorMaker> floorMakers = new List<FloorMaker>();
