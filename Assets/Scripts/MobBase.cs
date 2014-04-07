@@ -3,15 +3,14 @@ using System.Collections;
 
 public class MobBase : MonoBehaviour {
 
-	private GameObject player;
+	private static GameObject player;
 	private float _health;
 	private float _detectRange; //Range at which mob loses you
 	private float _targetRange; //Range at which mob aggresses
 	private float _engageRange; //Range mob tries to fight at
 	private AIStates AIState;
 	private bool isFighting;
-
-	private CharacterController controller;
+	
 	private Vector3 velocity;
 	private Vector3 target;
 	private Vector3 temp;
@@ -20,7 +19,7 @@ public class MobBase : MonoBehaviour {
 	private float xmove;
 	private float ymove;
 
-	
+
 	#region Get/Set Variables
 	
 	public float speed{
@@ -56,7 +55,6 @@ public class MobBase : MonoBehaviour {
 
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
-		controller = GetComponent<CharacterController>();
 		StartCoroutine ("updateState");
 	}
 
@@ -68,7 +66,7 @@ public class MobBase : MonoBehaviour {
 		}
 
 		//Reset move variables
-		velocity = controller.velocity;
+		velocity = rigidbody.velocity;
 		xmove = 0f;
 		ymove = 0f;
 
@@ -90,7 +88,7 @@ public class MobBase : MonoBehaviour {
 		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
 		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
 		Debug.Log (xmove + ", " + ymove);
-		controller.Move(velocity*Time.deltaTime);
+		rigidbody.velocity = velocity;
 	}
 
 	#region State Directions
@@ -158,7 +156,7 @@ public class MobBase : MonoBehaviour {
 	IEnumerator updateState(){
 		for(;;){
 			AIState = calcState (gameObject, player, detectRange, targetRange, engageRange);
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(1f);
 		}
 	}
 	#endregion
