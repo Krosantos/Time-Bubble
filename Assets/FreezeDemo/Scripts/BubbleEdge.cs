@@ -13,11 +13,20 @@ public class BubbleEdge : MonoBehaviour {
 		else{
 			Debug.Log ("False Alarm!");
 		}
+
+		if(other.GetComponent<SlowBase>() != null){
+			other.GetComponent<SlowBase>().Slow();
+		}
+
 	}
 
 	void OnTriggerExit(Collider other){
 		if(other.GetComponent<FreezeBase>() != null){
 			other.GetComponent<FreezeBase>().Freeze();
+		}
+
+		if(other.GetComponent<SlowBase>() != null){
+			other.GetComponent<SlowBase>().Unslow();
 		}
 	}
 }
