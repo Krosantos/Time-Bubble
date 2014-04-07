@@ -9,6 +9,7 @@ public class MapMaker : MonoBehaviour {
 	public GameObject start;
 	public GameObject door;
 	public GameObject player;
+	public GameObject key;
 
 	public float turnchance = .1f;
 	public float turnaroundchance = .05f;
@@ -126,7 +127,35 @@ public class MapMaker : MonoBehaviour {
 		Destroy(t.tile);
 		GameObject newDoor = (GameObject)Instantiate(door, farthestDoorPosition, Quaternion.identity);
 		newDoor.transform.parent = transform;
-		tilemap[(int)newDoor.transform.position.x,(int)newDoor.transform.position.y].SetTile(door);
+		tilemap[(int)newDoor.transform.position.x,(int)newDoor.transform.position.y].SetTile(newDoor);
+		tilemap[(int)newDoor.transform.position.x,(int)newDoor.transform.position.y].isDoor = true;
+
+		// find key location
+		float distanceFromSpawn = 0f;
+		float distanceFromDoor = 0f;
+		Vector2 keyPosition = new Vector2(); 
+		for (int i = 0; i < 1000; i++){
+			for (int j = 0; j < 1000; j++){
+				if (!tilemap[i,j].isEmpty && !tilemap[i,j].isStart && !tilemap[i,j].isDoor){
+					Vector2 tileposition = tilemap[i,j].tile.transform.position;
+					float tileDistanceFromSpawn = ((Vector2)tileposition - (Vector2)startTile.transform.position).magnitude;
+					float tileDistanceFromDoor = ((Vector2)tileposition - (Vector2)newDoor.transform.position).magnitude;
+					if (tileDistanceFromSpawn >= distanceFromSpawn && tileDistanceFromDoor >= distanceFromDoor){
+						distanceFromSpawn = tileDistanceFromSpawn;
+						distanceFromDoor = tileDistanceFromDoor;
+						keyPosition = tileposition;
+					}
+				}
+			}
+		}
+
+		// make a key
+		t = tilemap[(int)keyPosition.x,(int)keyPosition.y];
+		Destroy(t.tile);
+		GameObject newKey = (GameObject)Instantiate(key, keyPosition, Quaternion.identity);
+		newKey.transform.parent = transform;
+		tilemap[(int)newKey.transform.position.x,(int)newKey.transform.position.y].SetTile(newKey);
+
 		
 		MakeWalls();
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Tile{
 
-	public bool isEmpty, mightBeWall, isStart;
+	public bool isEmpty, mightBeWall, isStart, isDoor = false;
 	public GameObject tile;
 
 	public Tile(){
