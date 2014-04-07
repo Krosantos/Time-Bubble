@@ -94,11 +94,11 @@ public class MobBase : MonoBehaviour {
 	}
 	#endregion
 	#region State Directions
-	void Idle(){
+	protected virtual void Idle(){
 		StartCoroutine ("IdleCR");
 	}
 	
-	void Pursue(){
+	protected virtual void Pursue(){
 		StopCoroutine ("IdleCR");
 		target = (player.transform.position - transform.position);
 		target.Normalize();
@@ -106,7 +106,7 @@ public class MobBase : MonoBehaviour {
 		ymove = target.y;
 	}
 	
-	void Attack(){
+	protected void Attack(){
 		StopCoroutine ("IdleCR");
 	}
 	

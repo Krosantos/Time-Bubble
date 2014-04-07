@@ -11,4 +11,10 @@ public class TestMob : MobBase {
 		engageRange = 10f;
 		accel = 10f;
 	}
+
+	protected override void Idle ()
+	{
+		//Debug.Log ("OVERRIDE!");
+		base.Idle();
+	}
 }
