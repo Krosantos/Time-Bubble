@@ -8,10 +8,10 @@ public class BubbleEdge : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if(other.GetComponent<FreezeBase>() != null){
 			other.GetComponent<FreezeBase>().Unfreeze();
-			Debug.Log ("Boop!");
+			//Debug.Log ("Boop!");
 		}
 		else{
-			Debug.Log ("False Alarm!");
+			//Debug.Log ("False Alarm!");
 		}
 
 		if(other.GetComponent<SlowBase>() != null){
