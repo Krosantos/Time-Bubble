@@ -24,7 +24,7 @@ public class MapMaker : MonoBehaviour {
 
 	public int iterations = 112;
 
-	public float minEnemyDistance = 5f;
+	public float minEnemyDistance = 10f;
 	public float enemySpawnRate = .1f;  // likelihood of enemy spawning at any given floor tile
 
 	public List<FloorMaker> floorMakers = new List<FloorMaker>();
@@ -134,9 +134,9 @@ public class MapMaker : MonoBehaviour {
 		tilemap[(int)newDoor.transform.position.x,(int)newDoor.transform.position.y].SetTile(newDoor);
 		tilemap[(int)newDoor.transform.position.x,(int)newDoor.transform.position.y].isDoor = true;
 
-		// find key location
-		float distanceFromSpawn = 0f;
-		float distanceFromDoor = 0f;
+		// find key location & place enemies
+		float distanceFromSpawn = 10f; // these two variables also function as the minimum key distance from either location
+		float distanceFromDoor = 10f;
 		Vector2 keyPosition = new Vector2(); 
 		for (int i = 0; i < 1000; i++){
 			for (int j = 0; j < 1000; j++){
@@ -151,7 +151,7 @@ public class MapMaker : MonoBehaviour {
 						keyPosition = tileposition;
 					}
 
-					if (distanceFromSpawn > minEnemyDistance){
+					if (tileDistanceFromSpawn > minEnemyDistance){
 						float r = Random.Range(0f,1f);
 						if (r < enemySpawnRate){
 							Instantiate(enemy, tileposition, Quaternion.identity);
