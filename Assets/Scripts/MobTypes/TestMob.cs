@@ -6,15 +6,9 @@ public class TestMob : MobBase {
 	public TestMob (){
 		speed = 4f;
 		health = 2f;
-		detectRange = 50f;
-		targetRange = 20f;
-		engageRange = 10f;
+		detectRange = 5f;
+		targetRange = 5f;
+		engageRange = 5f;
 		accel = 10f;
-	}
-
-	protected override void Idle ()
-	{
-		//Debug.Log ("OVERRIDE!");
-		base.Idle();
 	}
 }

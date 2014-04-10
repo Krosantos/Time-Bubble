@@ -10,15 +10,18 @@ public class MobBase : MonoBehaviour {
 	private float _engageRange; //Range mob tries to fight at
 	private AIStates AIState;
 	private bool isFighting;
-	
+
+	public GameObject lastNode;
+	public GameObject nextNode;
+	private float nodeDist;
 	private CharacterController self;
 	private Vector3 velocity;
 	private Vector3 target;
-	private Vector3 temp;
 	private float _speed;
 	private float _accel;
 	private float xmove;
 	private float ymove;
+	private float accelMod=1;
 	
 	
 	#region Get/Set Variables
@@ -56,6 +59,7 @@ public class MobBase : MonoBehaviour {
 	#region Start/Update
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
+		lockNode();
 		self = GetComponent<CharacterController>();
 		StartCoroutine ("updateState");
 	}
@@ -76,30 +80,42 @@ public class MobBase : MonoBehaviour {
 		//Determine movetarget
 		switch (AIState){
 		case AIStates.Idle:
+			accelMod = .02f;
+			//lockNode();
 			Idle ();
 			break;
 		case AIStates.Pursue:
+			accelMod = 1;
 			Pursue();
 			break;
 		case AIStates.Attack:
+			accelMod = 1;
 			Pursue();
 			break;
 		}
 		
 		//Move to movetarget
-		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel);
-		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
+		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel*accelMod);
+		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel*accelMod);
 		//Debug.Log (xmove + ", " + ymove);
 		self.Move(velocity*Time.deltaTime);
 	}
 	#endregion
 	#region State Directions
 	protected virtual void Idle(){
-		StartCoroutine ("IdleCR");
+		target = (nextNode.transform.position - transform.position);
+		nodeDist=target.magnitude;
+		target.Normalize();
+		xmove = target.x;
+		ymove = target.y;
+		if(nodeDist<0.03f){
+			lastNode=nextNode;
+			nextNode=lastNode.GetComponent<Node>().getNextNode(lastNode);
+		}
 	}
 	
 	protected virtual void Pursue(){
-		StopCoroutine ("IdleCR");
+
 		target = (player.transform.position - transform.position);
 		target.Normalize();
 		xmove = target.x;
@@ -107,17 +123,10 @@ public class MobBase : MonoBehaviour {
 	}
 	
 	protected void Attack(){
-		StopCoroutine ("IdleCR");
+
 	}
 	
-	IEnumerator IdleCR(){
-		for(;;){
-			xmove = Random.Range(-3f,3f);
-			ymove = Random.Range(-3f,3f);
-			//Debug.Log ("Random Idle");
-			yield return new WaitForSeconds(5f);
-		}
-	}
+
 	#endregion
 	#region State Calculation
 	AIStates calcState(){
@@ -164,4 +173,9 @@ public class MobBase : MonoBehaviour {
 		}
 	}
 	#endregion
+	public void lockNode(){
+		if(NodeMapGen.nodeMap[(int)transform.position.x+NodeMapGen.xOffSet,(int)transform.position.y+NodeMapGen.yOffSet]!=null){
+			nextNode=NodeMapGen.nodeMap[(int)transform.position.x+NodeMapGen.xOffSet,(int)transform.position.y+NodeMapGen.yOffSet];
+		}
+	}
 }
