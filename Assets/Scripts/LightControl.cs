@@ -18,6 +18,8 @@ public class LightControl : MonoBehaviour {
 	Color attackcolor;
 	float targetradius;
 
+	bool beamOn = false;
+
 	// Use this for initialization
 	void Start () {
 		light2d = GetComponent<Light2D>();
@@ -45,17 +47,17 @@ public class LightControl : MonoBehaviour {
 
 		light2d.LightConeStart = angle;
 
+		if (Input.GetMouseButtonDown(0)) beamOn = !beamOn;
 
 
 
-
-		if (Input.GetMouseButton(0)){
+		if (beamOn){
 			if (t < 1f) t += Time.deltaTime * 10f;
 			intensity = Mathf.Clamp((distance.magnitude-10f)/2f, 0f, 1f);
 			targetangle = Mathf.Lerp(90f, 2f, intensity);
 			attackcolor = Color.Lerp(weakattackcolor, strongattackcolor, intensity);
 			targetradius = Mathf.Lerp(7.5f, 20f, intensity);
-		}else if (!Input.GetMouseButton(0) && t > 0f){
+		}else if (!beamOn && t > 0f){
 			t -= Time.deltaTime * 7f;
 		}
 
@@ -73,7 +75,7 @@ public class LightControl : MonoBehaviour {
 	}
 
 	void OnLightStay(Light2D l, GameObject g){
-		if (g.tag == "Enemy" && Input.GetMouseButton(0)){
+		if (g.tag == "Enemy" && beamOn){
 			Destroy(g);
 			float range = Mathf.Clamp(1f - ((g.transform.position - transform.position).magnitude / l.LightRadius), 0f, 1f);
 			float compositeintensity = range * intensity;
