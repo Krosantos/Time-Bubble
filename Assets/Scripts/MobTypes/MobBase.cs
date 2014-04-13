@@ -4,6 +4,7 @@ using System.Collections;
 public class MobBase : MonoBehaviour {
 	
 	static private GameObject player;
+	public LayerMask collideMask;
 	private float _health;
 	private float _detectRange; //Range at which mob loses you
 	private float _targetRange; //Range at which mob aggresses
@@ -14,13 +15,13 @@ public class MobBase : MonoBehaviour {
 	public GameObject lastNode;
 	public GameObject nextNode;
 	private float nodeDist;
-	private CharacterController self;
-	private Vector3 velocity;
+	private Rigidbody self;
+	private Vector3 moveVec;
 	private Vector3 target;
 	private float _speed;
 	private float _accel;
-	private float xmove;
-	private float ymove;
+	private float _regenRate;
+	private float _resistRate; //Unintuitively, 1 means no resist, 0 means immune.
 	private float accelMod=1;
 	
 	
@@ -29,6 +30,16 @@ public class MobBase : MonoBehaviour {
 	public float speed{
 		get {return _speed;}
 		set {_speed = value;}
+	}
+
+	public float regenRate{
+		get {return _regenRate;}
+		set {_regenRate = value;}
+	}
+
+	public float resistRate{
+		get {return _resistRate;}
+		set {_resistRate = value;}
 	}
 	
 	public float accel{
@@ -60,7 +71,7 @@ public class MobBase : MonoBehaviour {
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
 		lockNode();
-		self = GetComponent<CharacterController>();
+		self = GetComponent<Rigidbody>();
 		StartCoroutine ("updateState");
 	}
 	
@@ -71,44 +82,26 @@ public class MobBase : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		
-		//Reset move variables
-		velocity = self.velocity;
-		xmove = 0f;
-		ymove = 0f;
-		
-		
 		//Determine movetarget
 		switch (AIState){
 		case AIStates.Idle:
-			accelMod = .02f;
-			//lockNode();
 			Idle ();
 			break;
 		case AIStates.Pursue:
-			accelMod = 1;
 			Pursue();
 			break;
 		case AIStates.Attack:
-			accelMod = 1;
 			Pursue();
 			break;
 		}
-		
-		//Move to movetarget
-		velocity.x = Mathf.Lerp(velocity.x, xmove * speed, Time.deltaTime * accel*accelMod);
-		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel*accelMod);
-		//Debug.Log (xmove + ", " + ymove);
-		self.Move(velocity*Time.deltaTime);
+		Move ();
 	}
 	#endregion
 	#region State Directions
 	protected virtual void Idle(){
 		target = (nextNode.transform.position - transform.position);
 		nodeDist=target.magnitude;
-		target.Normalize();
-		xmove = target.x;
-		ymove = target.y;
-		if(nodeDist<0.03f){
+		if(nodeDist<0.2f){
 			lastNode=nextNode;
 			nextNode=lastNode.GetComponent<Node>().getNextNode(lastNode);
 		}
@@ -116,14 +109,20 @@ public class MobBase : MonoBehaviour {
 	
 	protected virtual void Pursue(){
 
-		target = (player.transform.position - transform.position);
-		target.Normalize();
-		xmove = target.x;
-		ymove = target.y;
+		target = (player.transform.position-transform.position);
 	}
 	
 	protected void Attack(){
 
+	}
+
+	void Move(){
+
+		moveVec = target.normalized*speed*Time.deltaTime*accelMod;
+		float moveDist = moveVec.magnitude;
+		if(!Physics.Raycast(transform.position,target,moveDist+.5f,collideMask)){
+			self.MovePosition (moveVec+transform.position);
+		}
 	}
 	
 
@@ -134,13 +133,13 @@ public class MobBase : MonoBehaviour {
 		//TODO:Contemplate Fleeing
 		
 		float distance = Calc.getRangeFrom(gameObject, player);
-		
+
 		if(distance > detectRange){
 			isFighting = false;
 			//Debug.Log ("IDLE");
 			return AIStates.Idle;
 		}
-		else if(distance <= targetRange && distance > engageRange){
+		else if( distance <= targetRange && distance > engageRange){
 			isFighting = true;
 			//Debug.Log ("CHASE");
 			return AIStates.Pursue;
@@ -172,6 +171,40 @@ public class MobBase : MonoBehaviour {
 			yield return new WaitForSeconds(.5f);
 		}
 	}
+
+	#region Light Effects
+	public void Petrify(float compositeIntensity){
+		if(accelMod > 0f){
+			accelMod-=compositeIntensity*Time.deltaTime;
+		}
+		if(accelMod < 0f){
+			accelMod = 0f;
+		}
+	}
+	public void Recover(){
+		StartCoroutine("UnFreeze");
+	}
+
+	IEnumerator UnFreeze(){
+		for(;;){
+			if(accelMod < 1){
+				accelMod += regenRate*Time.deltaTime;
+			}
+			if(accelMod > 1){
+				accelMod = 1;
+				Suicide("UnFreeze");
+			}
+			yield return 0;
+		}
+	}
+
+	void Suicide(string targetCR){
+		StopCoroutine("targetCR");
+	}
+
+	#endregion
+
+
 	#endregion
 	public void lockNode(){
 		if(NodeMapGen.nodeMap[(int)transform.position.x+NodeMapGen.xOffSet,(int)transform.position.y+NodeMapGen.yOffSet]!=null){

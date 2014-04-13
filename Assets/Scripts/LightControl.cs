@@ -76,14 +76,15 @@ public class LightControl : MonoBehaviour {
 
 	void OnLightStay(Light2D l, GameObject g){
 		if (g.tag == "Enemy" && beamOn){
-			Destroy(g);
 			float range = Mathf.Clamp(1f - ((g.transform.position - transform.position).magnitude / l.LightRadius), 0f, 1f);
 			float compositeintensity = range * intensity;
-			Debug.Log(compositeintensity);
+			g.GetComponent<MobBase>().Petrify(compositeintensity);
 		}
 	}
 
 	void OnLightExit(Light2D l, GameObject g){
-
+		if (g.tag == "Enemy"){
+			g.GetComponent<MobBase>().Recover();
+		}
 	}
 }
