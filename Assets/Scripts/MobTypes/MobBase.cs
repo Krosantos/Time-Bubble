@@ -174,6 +174,7 @@ public class MobBase : MonoBehaviour {
 
 	#region Light Effects
 	public void Petrify(float compositeIntensity){
+		StopCoroutine("UnFreeze");
 		if(accelMod > 0f){
 			accelMod-=compositeIntensity*Time.deltaTime;
 		}
