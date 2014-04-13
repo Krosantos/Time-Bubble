@@ -29,11 +29,9 @@ public class MovePlayer : MonoBehaviour{
 		ymove = 0f;
 
 		if (Input.GetKey(left)){
-			if (transform.localScale.x > 0f) ReverseXScale();
 			xmove = -1f;
 		}
 		if (Input.GetKey(right)){
-			if (transform.localScale.x < 0f) ReverseXScale();
 			xmove = 1f;
 		}
 		if (Input.GetKey(up)){
@@ -54,8 +52,4 @@ public class MovePlayer : MonoBehaviour{
 		controller.Move(velocity*Time.deltaTime);
 	}
 
-	private void ReverseXScale(){
-		transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-	}
-	
 }
