@@ -47,16 +47,18 @@ public class LightControl : MonoBehaviour {
 
 		light2d.LightConeStart = angle;
 
-		if (Input.GetMouseButtonDown(0)) beamOn = !beamOn;
-
-
+		if (Input.GetMouseButtonDown(0)){
+			beamOn = !beamOn;
+			ScreenShake2D.Shake(0f,0f);
+		}
 
 		if (beamOn){
 			if (t < 1f) t += Time.deltaTime * 10f;
-			intensity = Mathf.Clamp((distance.magnitude-10f)/2f, 0f, 1f);
+			intensity = Mathf.Clamp((distance.magnitude-10f)/0.75f, 0f, 1f);
 			targetangle = Mathf.Lerp(90f, 2f, intensity);
 			attackcolor = Color.Lerp(weakattackcolor, strongattackcolor, intensity);
 			targetradius = Mathf.Lerp(7.5f, 20f, intensity);
+			ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
 		}else if (!beamOn && t > 0f){
 			t -= Time.deltaTime * 7f;
 		}
@@ -66,7 +68,8 @@ public class LightControl : MonoBehaviour {
 		light2d.LightRadius = Mathf.Lerp (5f, targetradius, t);
 		light2d.LightColor = Color.Lerp(neutralcolor, attackcolor, t);
 		Camera.main.orthographicSize = Mathf.Lerp (camsize, camsize - zoomamount, t);
-		cam.GetComponent<CameraFollow>().offset = Vector3.Lerp(Vector3.zero, distance.normalized * zoomoffset, t);
+		cam.transform.parent.GetComponent<CameraFollow>().offset = Vector3.Lerp(Vector3.zero, distance.normalized * zoomoffset, t);
+
 	}
 
 	void OnLightEnter(Light2D l, GameObject g){
