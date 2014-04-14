@@ -83,6 +83,7 @@ public class LightControl : MonoBehaviour {
 	}
 
 	void OnLightExit(Light2D l, GameObject g){
+		if (g == null) return;
 		if (g.tag == "Enemy"){
 			g.GetComponent<MobBase>().Recover();
 		}

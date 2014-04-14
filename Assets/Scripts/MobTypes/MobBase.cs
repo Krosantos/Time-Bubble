@@ -22,7 +22,7 @@ public class MobBase : MonoBehaviour {
 	private float _accel;
 	private float _regenRate;
 	private float _resistRate; //Unintuitively, 1 means no resist, 0 means immune.
-	private float accelMod=1;
+	public float accelMod=1;
 	
 	
 	#region Get/Set Variables
