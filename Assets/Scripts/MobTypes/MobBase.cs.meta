@@ -2,7 +2,11 @@ fileFormatVersion: 2
 guid: 6630bf5ec0989714283a7f8a08f2c570
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - lastNode: {instanceID: 0}
+  - nextNode: {instanceID: 0}
+  - defMat: {fileID: 2100000, guid: 5e53b1169a1f64042a992d572bce21d1, type: 2}
+  - stoneMat: {fileID: 2100000, guid: 7c78f771218fec94cba0b889c63cba50, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

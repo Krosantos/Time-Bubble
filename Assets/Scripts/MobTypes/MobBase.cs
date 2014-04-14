@@ -24,6 +24,9 @@ public class MobBase : MonoBehaviour {
 	private float _regenRate;
 	private float _resistRate; //Unintuitively, 1 means no resist, 0 means immune.
 	public float accelMod=1;
+
+	public Material defMat;
+	public Material stoneMat;
 	
 	
 	#region Get/Set Variables
@@ -80,8 +83,11 @@ public class MobBase : MonoBehaviour {
 	void Update(){
 		
 		//Check for death
-		if(health <= 0){
-			Destroy (gameObject);
+		if(accelMod <= 0f){
+			gameObject.renderer.material = stoneMat;
+		}
+		else{
+			gameObject.renderer.material = defMat;
 		}
 		
 		//Determine movetarget
@@ -101,12 +107,18 @@ public class MobBase : MonoBehaviour {
 	#endregion
 	#region State Directions
 	protected virtual void Idle(){
-		target = (nextNode.transform.position - transform.position);
-		nodeDist=target.magnitude;
-		if(nodeDist<0.2f){
-			lastNode=nextNode;
-			nextNode=lastNode.GetComponent<Node>().getNextNode(lastNode);
+		if(nextNode != null){
+			target = (nextNode.transform.position - transform.position);
+			nodeDist=target.magnitude;
+			if(nodeDist<0.2f){
+				lastNode=nextNode;
+				nextNode=lastNode.GetComponent<Node>().getNextNode(lastNode);
+			}
 		}
+		else{
+			lockNode();
+		}
+
 	}
 	
 	protected virtual void Pursue(){
