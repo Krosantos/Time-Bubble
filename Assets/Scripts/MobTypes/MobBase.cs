@@ -17,6 +17,7 @@ public class MobBase : MonoBehaviour {
 	private float nodeDist;
 	private Rigidbody self;
 	private Vector3 moveVec;
+	private Vector3 debugVec;
 	private Vector3 target;
 	private float _speed;
 	private float _accel;
@@ -73,6 +74,7 @@ public class MobBase : MonoBehaviour {
 		lockNode();
 		self = GetComponent<Rigidbody>();
 		StartCoroutine ("updateState");
+		StartCoroutine ("UnStick");
 	}
 	
 	void Update(){
@@ -131,9 +133,7 @@ public class MobBase : MonoBehaviour {
 	AIStates calcState(){
 		//Determines an AI's current state
 		//TODO:Contemplate Fleeing
-		
-		float distance = Calc.getRangeFrom(gameObject, player);
-
+		float distance = Calc.getRangeFrom(gameObject,player);
 		if(distance > detectRange){
 			isFighting = false;
 			//Debug.Log ("IDLE");
@@ -205,6 +205,17 @@ public class MobBase : MonoBehaviour {
 
 	#endregion
 
+	IEnumerator UnStick(){
+		for(;;){
+			if(transform.position == debugVec){
+				lockNode();
+			}
+			else{
+				debugVec = transform.position;
+			}
+			yield return new WaitForSeconds (1f);
+		}
+	}
 
 	#endregion
 	public void lockNode(){
