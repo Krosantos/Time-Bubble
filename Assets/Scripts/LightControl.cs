@@ -70,7 +70,7 @@ public class LightControl : MonoBehaviour {
 	}
 
 	void OnLightEnter(Light2D l, GameObject g){
-		Debug.Log(g.name);
+		//Debug.Log(g.name);
 
 	}
 
