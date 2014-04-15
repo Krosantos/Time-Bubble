@@ -3,10 +3,15 @@
 public class LoadingScreen : MonoBehaviour
 {
 	public string SceneToLoad;
-	
+
+	void Awake(){
+		Application.LoadLevelAdditive(SceneToLoad);
+
+	}
+
 	void Update()
 	{
-		if (Application.GetStreamProgressForLevel(SceneToLoad) == 1){Application.LoadLevel(SceneToLoad);} 
+		if (!Application.isLoadingLevel){Destroy(gameObject);} 
 	}
 
 

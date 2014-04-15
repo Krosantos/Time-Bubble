@@ -37,6 +37,8 @@ public class MapMaker : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 
+		ScoreManager.currentlevel++;
+
 		InitTileMap();
 
 		MakeFloors();

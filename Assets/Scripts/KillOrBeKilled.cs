@@ -8,7 +8,7 @@ public class KillOrBeKilled : MonoBehaviour {
 			if (gameObject.GetComponent<MobBase>().isPetrified){
 				Destroy(gameObject);
 			}else{
-				Destroy(c.gameObject);
+				Application.LoadLevel("End");
 			}
 		}
 	}
