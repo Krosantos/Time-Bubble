@@ -88,7 +88,7 @@ public class LightControl : MonoBehaviour {
 			float compositeintensity = range * intensity;
 			g.GetComponent<MobBase>().Petrify(compositeintensity);
 			g.transform.GetComponentInChildren<ParticleSystem>().startSpeed = Mathf.Lerp(5f,10f,intensity);
-			if (g.GetComponent<MobBase>().accelMod < .2f){ 
+			if (g.GetComponent<MobBase>().isPetrified){ 
 				g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 				ScreenShake2D.Shake(0f,0f);
 			} 

@@ -23,7 +23,9 @@ public class MobBase : MonoBehaviour {
 	private float _accel;
 	private float _regenRate;
 	private float _resistRate; //Unintuitively, 1 means no resist, 0 means immune.
-	public float accelMod=1;
+	private float accelMod=1;
+
+	public bool isPetrified = false;
 
 	public Material defMat;
 	public Material stoneMat;
@@ -81,9 +83,15 @@ public class MobBase : MonoBehaviour {
 	}
 	
 	void Update(){
+
+		if (accelMod <= 0f){
+			isPetrified = true;
+		}else{
+			isPetrified = false;
+		}
 		
 		//Check for death
-		if(accelMod <= 0f){
+		if(isPetrified){
 			gameObject.renderer.material = stoneMat;
 		}
 		else{
