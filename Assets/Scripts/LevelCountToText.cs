@@ -12,6 +12,10 @@ public class LevelCountToText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		displaytext.text = ScoreManager.currentlevel.ToString();
+		if (displaytext == null){
+			guiText.text = ScoreManager.currentlevel.ToString();
+		}else{
+			displaytext.text = ScoreManager.currentlevel.ToString();
+		}
 	}
 }
