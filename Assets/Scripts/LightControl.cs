@@ -20,6 +20,8 @@ public class LightControl : MonoBehaviour {
 
 	bool beamOn = false;
 
+	public GameObject FlareOnEnemy;
+
 	// Use this for initialization
 	void Start () {
 		light2d = GetComponent<Light2D>();
@@ -58,7 +60,6 @@ public class LightControl : MonoBehaviour {
 			targetangle = Mathf.Lerp(90f, 2f, intensity);
 			attackcolor = Color.Lerp(weakattackcolor, strongattackcolor, intensity);
 			targetradius = Mathf.Lerp(7.5f, 20f, intensity);
-			ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
 		}else if (!beamOn && t > 0f){
 			t -= Time.deltaTime * 7f;
 		}
@@ -74,6 +75,10 @@ public class LightControl : MonoBehaviour {
 
 	void OnLightEnter(Light2D l, GameObject g){
 		//Debug.Log(g.name);
+		if (g.tag == "Enemy" && beamOn){
+			g.transform.GetComponentInChildren<ParticleSystem>().Play();
+
+		}
 
 	}
 
@@ -82,6 +87,12 @@ public class LightControl : MonoBehaviour {
 			float range = Mathf.Clamp(1f - ((g.transform.position - transform.position).magnitude / l.LightRadius), 0f, 1f);
 			float compositeintensity = range * intensity;
 			g.GetComponent<MobBase>().Petrify(compositeintensity);
+			g.transform.GetComponentInChildren<ParticleSystem>().startSpeed = Mathf.Lerp(5f,10f,intensity);
+			if (g.GetComponent<MobBase>().accelMod < .2f){ 
+				g.transform.GetComponentInChildren<ParticleSystem>().Stop();
+				ScreenShake2D.Shake(0f,0f);
+			} 
+			else{ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);}
 		}
 	}
 
@@ -89,6 +100,7 @@ public class LightControl : MonoBehaviour {
 		if (g == null) return;
 		if (g.tag == "Enemy"){
 			g.GetComponent<MobBase>().Recover();
+			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 		}
 	}
 }
