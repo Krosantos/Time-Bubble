@@ -76,10 +76,11 @@ public class MobBase : MonoBehaviour {
 	#region Start/Update
 	void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
-		lockNode();
+		nextNode = lockNode();
 		self = GetComponent<Rigidbody>();
 		StartCoroutine ("updateState");
 		StartCoroutine ("UnStick");
+		StartCoroutine("NodeTrack");
 	}
 	
 	void Update(){
@@ -118,13 +119,13 @@ public class MobBase : MonoBehaviour {
 		if(nextNode != null){
 			target = (nextNode.transform.position - transform.position);
 			nodeDist=target.magnitude;
-			if(nodeDist<0.2f){
+			if(nodeDist<0.1f){
 				lastNode=nextNode;
 				nextNode=lastNode.GetComponent<Node>().getNextNode(lastNode);
 			}
 		}
 		else{
-			lockNode();
+			nextNode = lockNode();
 		}
 
 	}
@@ -191,7 +192,7 @@ public class MobBase : MonoBehaviour {
 			yield return new WaitForSeconds(.5f);
 		}
 	}
-
+	#endregion
 	#region Light Effects
 	public void Petrify(float compositeIntensity){
 		StopCoroutine("UnFreeze");
@@ -220,27 +221,53 @@ public class MobBase : MonoBehaviour {
 	}
 
 	void Suicide(string targetCR){
-		StopCoroutine("targetCR");
+		StopCoroutine(targetCR);
 	}
 
 	#endregion
 
 	IEnumerator UnStick(){
+		GameObject temp;
 		for(;;){
 			if(transform.position == debugVec){
-				lockNode();
+				temp = lockNode();
+				if(temp != null){
+					nextNode = temp.GetComponent<Node>().getNextNode(lastNode);
+				}
 			}
 			else{
 				debugVec = transform.position;
 			}
-			yield return new WaitForSeconds (1f);
+			yield return new WaitForSeconds (0.75f);
+		}
+	}
+	
+	public GameObject lockNode(){
+		float x = transform.position.x+NodeMapGen.xOffSet+0.5f;
+		float y = transform.position.y+NodeMapGen.yOffSet+0.5f;
+		if(NodeMapGen.nodeMap[(int)x,(int)y]!=null){
+			return NodeMapGen.nodeMap[(int)x,(int)y];
+		}
+		else return null;
+	}
+
+	private GameObject prevNode = null;
+	private GameObject currNode = null;
+	
+	IEnumerator NodeTrack(){
+		prevNode = lockNode();
+		currNode = lockNode();
+		for(;;){
+			if(prevNode != null){
+				prevNode.GetComponent<Node>().turnOn();
+			}
+			prevNode = currNode;
+			currNode = lockNode();
+			if(currNode != null){
+				currNode.GetComponent<Node>().turnOff();
+			}
+			yield return new WaitForSeconds(0.02f);
 		}
 	}
 
-	#endregion
-	public void lockNode(){
-		if(NodeMapGen.nodeMap[(int)transform.position.x+NodeMapGen.xOffSet,(int)transform.position.y+NodeMapGen.yOffSet]!=null){
-			nextNode=NodeMapGen.nodeMap[(int)transform.position.x+NodeMapGen.xOffSet,(int)transform.position.y+NodeMapGen.yOffSet];
-		}
-	}
 }

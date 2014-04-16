@@ -57,8 +57,8 @@ public class NodeMapGen : MonoBehaviour {
 					map += "O";
 				}
 			}
-			Debug.Log(map);
-			map = "";
+			map+="\n";
 		}
+		Debug.Log (map);
 	}
 }
