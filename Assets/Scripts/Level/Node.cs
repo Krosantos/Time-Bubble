@@ -5,6 +5,11 @@ public class Node : MonoBehaviour {
 
 	private int xCor;
 	private int yCor;
+	public bool isOn = true;
+
+	//Just while I test
+	public Material nodeOff;
+	public Material nodeOn;
 
 	public static int minX = int.MaxValue;
 	public static int minY = int.MaxValue;
@@ -36,6 +41,13 @@ public class Node : MonoBehaviour {
 		}
 	}
 
+	void Update(){
+		if(isOn){
+			transform.renderer.material = nodeOn;
+		}
+		else transform.renderer.material = nodeOff;
+	}
+
 	public int getX(){
 		return xCor;
 	}
@@ -52,6 +64,18 @@ public class Node : MonoBehaviour {
 		//Debug.Log ("Now, it's "+yCor);
 	}
 
+	public void turnOn(){
+		isOn = true;
+	}
+
+	public void turnOff(){
+		isOn = false;
+	}
+
+	public bool getOn(){
+		return isOn;
+	}
+
 	public GameObject getNextNode(GameObject lastNode){
 		bool check = false;
 		int randChoice;
@@ -65,27 +89,37 @@ public class Node : MonoBehaviour {
 				switch(randChoice){
 				case 1:
 					if(upNeighbour != null && upNeighbour != lastNode){
-						check = true;
-						result = upNeighbour;
+						//if(upNeighbour.GetComponent<Node>().isOn){
+							check = true;
+							result = upNeighbour;
+						//}
 					} 
 					break;
 				case 2:
 					if(downNeighbour != null && downNeighbour != lastNode){
-						check = true;
-						result = downNeighbour;
+						//if(downNeighbour.GetComponent<Node>().isOn){
+							check = true;
+							result = downNeighbour;
+						//}
 					}
 					break;
 				case 3:
 					if(leftNeighbour != null && leftNeighbour != lastNode){
-						check = true;
-						result = leftNeighbour;
+						//if(leftNeighbour.GetComponent<Node>().isOn){
+							check = true;
+							result = leftNeighbour;
+						//}
 					}
 					break;
 				case 4:
 					if(rightNeighbour != null && rightNeighbour != lastNode){
-						check = true;
-						result = rightNeighbour;
+						//if(rightNeighbour.GetComponent<Node>().isOn){
+							check = true;
+							result = rightNeighbour;
+						//}
 					}
+					break;
+				default:
 					break;
 				}
 			}
