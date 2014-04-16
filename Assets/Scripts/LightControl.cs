@@ -93,7 +93,12 @@ public class LightControl : MonoBehaviour {
 				g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 				ScreenShake2D.Shake(0f,0f);
 			} 
-			else{ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);}
+			else{
+				if (!g.transform.GetComponentInChildren<ParticleSystem>().isPlaying){
+					g.transform.GetComponentInChildren<ParticleSystem>().Play();
+				}
+				ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
+			}
 		}if (g.tag == "Enemy" && !beamOn){
 			g.GetComponent<MobBase>().Recover();
 			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
