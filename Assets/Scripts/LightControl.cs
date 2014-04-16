@@ -106,6 +106,7 @@ public class LightControl : MonoBehaviour {
 		if (g.tag == "Enemy"){
 			g.GetComponent<MobBase>().Recover();
 			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
+			ScreenShake2D.SetShake(0f);
 		}
 	}
 }
