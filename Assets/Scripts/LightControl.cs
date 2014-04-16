@@ -52,6 +52,7 @@ public class LightControl : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0)){
 			beamOn = !beamOn;
 			ScreenShake2D.Shake(0f,0f);
+
 		}
 
 		if (beamOn){
@@ -93,6 +94,10 @@ public class LightControl : MonoBehaviour {
 				ScreenShake2D.Shake(0f,0f);
 			} 
 			else{ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);}
+		}if (g.tag == "Enemy" && !beamOn){
+			g.GetComponent<MobBase>().Recover();
+			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
+		
 		}
 	}
 
