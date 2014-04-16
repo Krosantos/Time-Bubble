@@ -100,7 +100,7 @@ public class LightControl : MonoBehaviour {
 				ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
 			}
 		}if (g.tag == "Enemy" && !beamOn){
-			g.GetComponent<MobBase>().Recover();
+			//g.GetComponent<MobBase>().Recover();
 			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 		
 		}

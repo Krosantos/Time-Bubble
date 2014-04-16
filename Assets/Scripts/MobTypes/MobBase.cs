@@ -74,7 +74,7 @@ public class MobBase : MonoBehaviour {
 	}
 	#endregion
 	#region Start/Update
-	void Start(){
+	public virtual void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
 		nextNode = lockNode();
 		self = GetComponent<Rigidbody>();

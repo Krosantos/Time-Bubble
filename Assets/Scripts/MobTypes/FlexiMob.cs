@@ -11,7 +11,8 @@ public class FlexiMob : MobBase {
 	public float RegenRate = 1f;
 	public float Acceleration = 1f;
 
-	public FlexiMob (){
+	public override void Start (){
+		base.Start();
 		speed = Speed;
 		health = 2f;
 		detectRange = DetectRange;
@@ -21,4 +22,5 @@ public class FlexiMob : MobBase {
 		regenRate = RegenRate;
 		accel = Acceleration;
 	}
+
 }
