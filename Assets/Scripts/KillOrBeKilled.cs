@@ -7,6 +7,7 @@ public class KillOrBeKilled : MonoBehaviour {
 		if (c.gameObject.tag == "Player"){
 			if (gameObject.GetComponent<MobBase>().isPetrified){
 				clearNode();
+				ScreenShake2D.Shake(.25f,1f);
 				Destroy(gameObject);
 			}else{
 				Application.LoadLevel("End");
