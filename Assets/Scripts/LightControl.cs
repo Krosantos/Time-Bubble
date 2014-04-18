@@ -52,6 +52,11 @@ public class LightControl : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0)){
 			beamOn = !beamOn;
 			ScreenShake2D.Shake(0f,0f);
+			if (beamOn){
+				AudioManager.instance.Play(AudioManager.instance.turnbeamon);
+			}else{
+				AudioManager.instance.Play(AudioManager.instance.turnbeamoff);
+			}
 
 		}
 

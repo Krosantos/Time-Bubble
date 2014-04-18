@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour {
 
 	private List<AudioSource> audioSources = new List<AudioSource>();
 
-	public AudioClip menusound, music;
+	public AudioClip menusound, music, pickupkey, destroymob, petrifysound, turnbeamon, turnbeamoff;
 
 	void Awake(){
 		if (_instance == null){
