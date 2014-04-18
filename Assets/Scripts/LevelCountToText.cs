@@ -8,14 +8,10 @@ public class LevelCountToText : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		displaytext = GetComponent<TextMesh>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
 		if (displaytext == null){
-			guiText.text = ScoreManager.currentlevel.ToString();
+			guiText.text = "Level "+ScoreManager.currentlevel.ToString();
 		}else{
-			displaytext.text = ScoreManager.currentlevel.ToString();
+			displaytext.text = "Level "+ScoreManager.currentlevel.ToString();
 		}
 	}
 }
