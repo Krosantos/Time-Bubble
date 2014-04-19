@@ -22,6 +22,8 @@ public class LightControl : MonoBehaviour {
 
 	public GameObject FlareOnEnemy;
 
+	AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
 		light2d = GetComponent<Light2D>();
@@ -31,6 +33,8 @@ public class LightControl : MonoBehaviour {
 		Light2D.RegisterEventListener(LightEventListenerType.OnStay, OnLightStay);
 		Light2D.RegisterEventListener(LightEventListenerType.OnEnter, OnLightEnter);
 		Light2D.RegisterEventListener(LightEventListenerType.OnExit, OnLightExit);
+
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void OnDestroy(){
@@ -83,6 +87,7 @@ public class LightControl : MonoBehaviour {
 		//Debug.Log(g.name);
 		if (g.tag == "Enemy" && beamOn){
 			g.transform.GetComponentInChildren<ParticleSystem>().Play();
+			if (!audioSource.isPlaying) audioSource.Play();
 
 		}
 
@@ -97,16 +102,21 @@ public class LightControl : MonoBehaviour {
 			if (g.GetComponent<MobBase>().isPetrified){ 
 				g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 				ScreenShake2D.Shake(0f,0f);
+				if (audioSource.isPlaying) audioSource.Stop();
 			} 
 			else{
 				if (!g.transform.GetComponentInChildren<ParticleSystem>().isPlaying){
 					g.transform.GetComponentInChildren<ParticleSystem>().Play();
 				}
 				ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
+				if (!audioSource.isPlaying) audioSource.Play();
+				audioSource.pitch = Mathf.Lerp(.25f, 2f, compositeintensity);
+				audioSource.volume = Mathf.Lerp(0f, 1f, compositeintensity);
 			}
 		}if (g.tag == "Enemy" && !beamOn){
 			//g.GetComponent<MobBase>().Recover();
 			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
+			if (audioSource.isPlaying) audioSource.Stop();
 		
 		}
 	}
@@ -114,6 +124,7 @@ public class LightControl : MonoBehaviour {
 	void OnLightExit(Light2D l, GameObject g){
 		if (g == null) return;
 		if (g.tag == "Enemy"){
+			if (audioSource.isPlaying) audioSource.Stop();
 			g.GetComponent<MobBase>().Recover();
 			g.transform.GetComponentInChildren<ParticleSystem>().Stop();
 			ScreenShake2D.SetShake(0f);
