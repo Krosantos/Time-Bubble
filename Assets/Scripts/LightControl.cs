@@ -111,7 +111,7 @@ public class LightControl : MonoBehaviour {
 				ScreenShake2D.SetShake(Mathf.Clamp(intensity-.5f, 0f, 1f) * .1f);
 				if (!audioSource.isPlaying) audioSource.Play();
 				audioSource.pitch = Mathf.Lerp(.25f, 2f, compositeintensity);
-				audioSource.volume = Mathf.Lerp(0f, 1f, compositeintensity);
+				audioSource.volume = Mathf.Lerp(0f, .75f, compositeintensity);
 			}
 		}if (g.tag == "Enemy" && !beamOn){
 			//g.GetComponent<MobBase>().Recover();
