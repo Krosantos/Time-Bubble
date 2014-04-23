@@ -3,7 +3,8 @@ using System.Collections;
 
 public class TestMob : MobBase {
 
-	public TestMob (){
+	public override void Start (){
+		base.Start();
 		speed = 4f;
 		health = 2f;
 		detectRange = 20f;

@@ -4,7 +4,7 @@ public class LoadingScreen : MonoBehaviour
 {
 	public string SceneToLoad;
 
-	void Awake(){
+	void Start(){
 		Application.LoadLevelAdditive(SceneToLoad);
 
 	}

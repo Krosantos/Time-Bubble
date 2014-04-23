@@ -10,7 +10,7 @@ public class MapMaker : MonoBehaviour {
 	public GameObject door;
 	public GameObject player;
 	public GameObject key;
-	public GameObject enemy;
+	public GameObject[] enemy;
 
 	public float turnchance = .1f;
 	public float turnaroundchance = .05f;
@@ -156,7 +156,8 @@ public class MapMaker : MonoBehaviour {
 					if (tileDistanceFromSpawn > minEnemyDistance){
 						float r = Random.Range(0f,1f);
 						if (r < enemySpawnRate){
-							Instantiate(enemy, tileposition, Quaternion.identity);
+							int randint = Random.Range(0, enemy.Length);
+							Instantiate(enemy[randint], tileposition, Quaternion.identity);
 						}
 					}
 				}

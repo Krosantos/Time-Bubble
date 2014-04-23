@@ -19,6 +19,7 @@ public class MobBase : MonoBehaviour {
 	private Vector3 moveVec;
 	private Vector3 debugVec;
 	private Vector3 target;
+	private float recoverTime;
 	private float _speed;
 	private float _accel;
 	private float _regenRate;
@@ -74,7 +75,7 @@ public class MobBase : MonoBehaviour {
 	}
 	#endregion
 	#region Start/Update
-	void Start(){
+	public virtual void Start(){
 		player = GameObject.FindGameObjectWithTag("Player");
 		nextNode = lockNode();
 		self = GetComponent<Rigidbody>();
@@ -86,6 +87,7 @@ public class MobBase : MonoBehaviour {
 	void Update(){
 
 		if (accelMod <= 0f){
+			if (!isPetrified) AudioManager.instance.Play(AudioManager.instance.petrifysound);
 			isPetrified = true;
 		}else{
 			isPetrified = false;
@@ -208,6 +210,21 @@ public class MobBase : MonoBehaviour {
 	}
 
 	IEnumerator UnFreeze(){
+		recoverTime = 0;
+		for(;;){
+			if(recoverTime < 1){
+				recoverTime += regenRate*Time.deltaTime;
+			}
+			if(recoverTime > 1){
+				accelMod = 1;
+				recoverTime = 1;
+				Suicide("UnFreeze");
+			}
+			yield return 0;
+		}
+	}
+
+	/*IEnumerator UnFreeze(){
 		for(;;){
 			if(accelMod < 1){
 				accelMod += regenRate*Time.deltaTime;
@@ -218,7 +235,7 @@ public class MobBase : MonoBehaviour {
 			}
 			yield return 0;
 		}
-	}
+	}*/
 
 	void Suicide(string targetCR){
 		StopCoroutine(targetCR);
