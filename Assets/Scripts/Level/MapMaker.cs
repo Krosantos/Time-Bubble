@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class MapMaker : MonoBehaviour {
 
 	public GameObject floor;
-	public GameObject wall;
+	public GameObject topwall, forwardwall;
 	public GameObject start;
 	public GameObject door;
 	public GameObject player;
@@ -179,9 +179,17 @@ public class MapMaker : MonoBehaviour {
 		for (int i = 0; i < 1000; i++){
 			for (int j = 0; j < 1000; j++){
 				if (tilemap[i,j].mightBeWall){
-					GameObject newTile = (GameObject)Instantiate(wall, new Vector2(i,j), Quaternion.identity);
-					newTile.transform.parent = transform;
-					tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].SetTile(newTile);
+					if (!tilemap[i,j-1].isEmpty && !tilemap[i,j-1].mightBeWall){
+						GameObject newTile = (GameObject)Instantiate(forwardwall, new Vector2(i,j), Quaternion.identity);
+						newTile.transform.parent = transform;
+						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].SetTile(newTile);
+						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].mightBeWall = true;
+					}else{
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i,j), Quaternion.identity);
+						newTile.transform.parent = transform;
+						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].SetTile(newTile);
+						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].mightBeWall = true;
+					}
 				}
 			}
 		}
