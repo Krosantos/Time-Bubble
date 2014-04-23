@@ -3,6 +3,7 @@ using System.Collections;
 
 public class NodeMapGen : MonoBehaviour {
 
+	public static GameObject player;
 	public static int xOffSet;
 	public static int yOffSet;
 	public static GameObject [,] nodeMap;
@@ -33,8 +34,21 @@ public class NodeMapGen : MonoBehaviour {
 			Node node = temp[i].GetComponent<Node>();
 			node.mapNeighbours();
 		}
+
+		//Identify the Player.
+		player = GameObject.FindGameObjectWithTag("Player");
 		//PrintDimensions();
 		PrintMap();
+	}
+
+	//This is to track the player.
+	public static GameObject trackPlayer(){
+		float x = player.transform.position.x+xOffSet+0.5f;
+		float y = player.transform.position.y+yOffSet+0.5f;
+		if(nodeMap[(int)x,(int)y]!=null){
+			return nodeMap[(int)x,(int)y];
+		}
+		else return null;
 	}
 
 	//I used this while debugging.

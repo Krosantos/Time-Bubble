@@ -9,7 +9,7 @@ public class MobBase : MonoBehaviour {
 	private float _detectRange; //Range at which mob loses you
 	private float _targetRange; //Range at which mob aggresses
 	private float _engageRange; //Range mob tries to fight at
-	private AIStates AIState;
+	public AIStates AIState;
 	private bool isFighting;
 
 	public GameObject lastNode;
@@ -18,7 +18,7 @@ public class MobBase : MonoBehaviour {
 	private Rigidbody self;
 	private Vector3 moveVec;
 	private Vector3 debugVec;
-	private Vector3 target;
+	protected Vector3 target;
 	private float recoverTime;
 	private float _speed;
 	private float _accel;
@@ -84,7 +84,7 @@ public class MobBase : MonoBehaviour {
 		StartCoroutine("NodeTrack");
 	}
 	
-	void Update(){
+	public virtual void Update(){
 
 		if (accelMod <= 0f){
 			if (!isPetrified) AudioManager.instance.Play(AudioManager.instance.petrifysound);

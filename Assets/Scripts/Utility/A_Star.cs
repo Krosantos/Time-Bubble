@@ -9,7 +9,7 @@ public class A_Star : MonoBehaviour {
 	List<GameObject> closedList = new List<GameObject>();
 	List<GameObject> cameFrom = new List<GameObject>();
 
-	public GameObject AStar(GameObject NodeFrom, GameObject NodeGoal){
+	public GameObject[] AStar(GameObject NodeFrom, GameObject NodeGoal){
 
 		neighbours.Clear();
 		openList.Clear();
@@ -41,7 +41,7 @@ public class A_Star : MonoBehaviour {
 				Debug.Log ("OpenList Count: "+openList.Count);
 				Debug.Log ("Victory!");
 				bakePath (NodeGoal, NodeFrom);
-				return null;
+				return cameFrom.ToArray();
 			}
 			openList.Remove (currentNode);
 			closedList.Add (currentNode);
@@ -72,6 +72,7 @@ public class A_Star : MonoBehaviour {
 	void bakePath(GameObject goal, GameObject origin){
 		GameObject currentNode = goal;
 		cameFrom.Clear();
+		cameFrom.Add (goal);
 		for(int i=0;i<50;i++){
 		//while(currentNode.GetComponent<NodeData>().parent != origin){
 			cameFrom.Add(currentNode.GetComponent<NodeData>().parent);
@@ -80,8 +81,6 @@ public class A_Star : MonoBehaviour {
 		}
 		Debug.Log ("Return path: "+printList(cameFrom));
 	}
-
-	void etchPath(){}
 
 	void parseNeighbours(Node input){
 		neighbours.Clear();

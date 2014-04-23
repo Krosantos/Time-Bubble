@@ -78,21 +78,72 @@ public class Node : MonoBehaviour {
 		return isOn;
 	}
 
-	public GameObject getNextNode(GameObject lastNode){
+	/*public GameObject getNextNode(GameObject lastNode){
 		int randChoice;
 		GameObject result = lastNode;
 		if(neighbourCount == 1){
 			return result;
 		}
 		else{
-			randChoice = Random.Range(1,neighbours.Count);
+			randChoice = Random.Range(1,neighbourCount-1);
 			result = neighbours[randChoice];
 		}
 		return result;
-	}
+	}*/
 
 	public List<GameObject> getNeighbours(){
 		return neighbours;
+	}
+
+	public GameObject getNextNode(GameObject lastNode){
+		bool check = false;
+		int randChoice;
+		GameObject result = lastNode;
+		if(neighbourCount == 1){
+			return result;
+		}
+		else{
+			while(!check){
+				randChoice = Random.Range(1,5);
+				switch(randChoice){
+				case 1:
+					if(upNeighbour != null && upNeighbour != lastNode){
+						//if(upNeighbour.GetComponent<Node>().isOn){
+						check = true;
+						result = upNeighbour;
+						//}
+					} 
+					break;
+				case 2:
+					if(downNeighbour != null && downNeighbour != lastNode){
+						//if(downNeighbour.GetComponent<Node>().isOn){
+						check = true;
+						result = downNeighbour;
+						//}
+					}
+					break;
+				case 3:
+					if(leftNeighbour != null && leftNeighbour != lastNode){
+						//if(leftNeighbour.GetComponent<Node>().isOn){
+						check = true;
+						result = leftNeighbour;
+						//}
+					}
+					break;
+				case 4:
+					if(rightNeighbour != null && rightNeighbour != lastNode){
+						//if(rightNeighbour.GetComponent<Node>().isOn){
+						check = true;
+						result = rightNeighbour;
+						//}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	public void mapNeighbours(){
