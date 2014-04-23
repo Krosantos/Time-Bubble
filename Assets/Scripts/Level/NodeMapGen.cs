@@ -34,7 +34,7 @@ public class NodeMapGen : MonoBehaviour {
 			node.mapNeighbours();
 		}
 		//PrintDimensions();
-		//PrintMap();
+		PrintMap();
 	}
 
 	//I used this while debugging.
