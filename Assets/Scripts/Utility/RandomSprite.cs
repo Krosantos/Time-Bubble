@@ -3,12 +3,13 @@ using System.Collections;
 
 public class RandomSprite : MonoBehaviour {
 
-	public Sprite[] sprites;
+	public Texture[] sprites;
+
 
 	// Use this for initialization
 	void Start () {
 		int r = Random.Range(0,sprites.Length);
-		GetComponent<SpriteRenderer>().sprite = sprites[r];
+		renderer.material.mainTexture = sprites[r];
 	}
 
 }
