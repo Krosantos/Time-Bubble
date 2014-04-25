@@ -190,6 +190,50 @@ public class MapMaker : MonoBehaviour {
 						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].SetTile(newTile);
 						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].mightBeWall = true;
 					}
+
+					// if any adjacent tiles are empty, make another wall. helps with padding
+					Tile up = tilemap[i,j+1];
+					Tile down = tilemap[i,j-1];
+					Tile left = tilemap[i-1,j];
+					Tile right = tilemap[i+1,j];
+					Tile upleft = tilemap[i-1,j+1];
+					Tile upright = tilemap[i+1,j+1];
+					Tile downleft = tilemap[i-1,j-1];
+					Tile downright = tilemap[i+1,j-1];
+					if (up.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i,j+1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (down.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i,j-1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (left.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i-1,j), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (right.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i+1,j), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (upleft.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i-1,j+1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (upright.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i+1,j+1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (downleft.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i-1,j-1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+					if (downright.isEmpty){
+						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i+1,j-1), Quaternion.identity);
+						newTile.transform.parent = transform;
+					}
+
+
 				}
 			}
 		}
