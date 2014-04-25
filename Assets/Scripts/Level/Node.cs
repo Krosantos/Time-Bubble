@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Node : MonoBehaviour {
 
@@ -16,6 +17,7 @@ public class Node : MonoBehaviour {
 	public static int maxX = int.MinValue;
 	public static int maxY = int.MinValue;
 	public static int tileCount = 0;
+	private List<GameObject> neighbours = new List<GameObject>();
 
 	public int neighbourCount;
 	public GameObject upNeighbour;
@@ -76,6 +78,23 @@ public class Node : MonoBehaviour {
 		return isOn;
 	}
 
+	/*public GameObject getNextNode(GameObject lastNode){
+		int randChoice;
+		GameObject result = lastNode;
+		if(neighbourCount == 1){
+			return result;
+		}
+		else{
+			randChoice = Random.Range(1,neighbourCount-1);
+			result = neighbours[randChoice];
+		}
+		return result;
+	}*/
+
+	public List<GameObject> getNeighbours(){
+		return neighbours;
+	}
+
 	public GameObject getNextNode(GameObject lastNode){
 		bool check = false;
 		int randChoice;
@@ -90,32 +109,32 @@ public class Node : MonoBehaviour {
 				case 1:
 					if(upNeighbour != null && upNeighbour != lastNode){
 						//if(upNeighbour.GetComponent<Node>().isOn){
-							check = true;
-							result = upNeighbour;
+						check = true;
+						result = upNeighbour;
 						//}
 					} 
 					break;
 				case 2:
 					if(downNeighbour != null && downNeighbour != lastNode){
 						//if(downNeighbour.GetComponent<Node>().isOn){
-							check = true;
-							result = downNeighbour;
+						check = true;
+						result = downNeighbour;
 						//}
 					}
 					break;
 				case 3:
 					if(leftNeighbour != null && leftNeighbour != lastNode){
 						//if(leftNeighbour.GetComponent<Node>().isOn){
-							check = true;
-							result = leftNeighbour;
+						check = true;
+						result = leftNeighbour;
 						//}
 					}
 					break;
 				case 4:
 					if(rightNeighbour != null && rightNeighbour != lastNode){
 						//if(rightNeighbour.GetComponent<Node>().isOn){
-							check = true;
-							result = rightNeighbour;
+						check = true;
+						result = rightNeighbour;
 						//}
 					}
 					break;
@@ -132,9 +151,10 @@ public class Node : MonoBehaviour {
 		downNeighbour = NodeMapGen.nodeMap[xCor,yCor-1];
 		leftNeighbour = NodeMapGen.nodeMap[xCor-1,yCor];
 		rightNeighbour = NodeMapGen.nodeMap[xCor+1,yCor];
-		if(upNeighbour!=null)neighbourCount++;
-		if(downNeighbour!=null)neighbourCount++;
-		if(leftNeighbour!=null)neighbourCount++;
-		if(rightNeighbour!=null)neighbourCount++;
+		if(upNeighbour!=null)neighbours.Add (upNeighbour);
+		if(downNeighbour!=null)neighbours.Add (downNeighbour);
+		if(leftNeighbour!=null)neighbours.Add (leftNeighbour);
+		if(rightNeighbour!=null)neighbours.Add (rightNeighbour);
+		neighbourCount = neighbours.Count;
 	}
 }

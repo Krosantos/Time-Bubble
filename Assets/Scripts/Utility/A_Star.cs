@@ -2,61 +2,103 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*public abstract class A_Star : MonoBehaviour {
+public class A_Star : MonoBehaviour {
 
-	private List<GameObject> openList = new List<GameObject>();
-	private List<GameObject> closedList = new List<GameObject>();
-	private List<GameObject> neighbours = new List<GameObject>();
+	List<GameObject> neighbours = new List<GameObject>();
+	List<GameObject> openList = new List<GameObject>();
+	List<GameObject> closedList = new List<GameObject>();
+	List<GameObject> cameFrom = new List<GameObject>();
 
-	public GameObject AStar(GameObject NodeFrom, GameObject NodeGoal){
+	public GameObject[] AStar(GameObject NodeFrom, GameObject NodeGoal){
+
+		neighbours.Clear();
 		openList.Clear();
 		closedList.Clear();
-		int currentG = 0;
-		GameObject temp, currentNode = NodeFrom;
-		Node script;
-		while(!closedList.Contains(NodeGoal)){
-			script = currentNode.GetComponent<Node>();
-			parseNeighbours (script);
+		cameFrom.Clear();
+
+		GameObject currentNode = NodeFrom;
+		NodeFrom.GetComponent<NodeData>().parent = NodeFrom;
+		openList.Add (NodeFrom);
+		int gScore = 0;
+		NodeFrom.GetComponent<NodeData>().F=int.MaxValue;
+
+		int j =0;
+		while(openList.Count > 0){
+			//Select best F from openList
+			Debug.Log ("Trial #"+(j+1));
+			j++;
+			currentNode = openList[0];
+			for(int i=0;i<openList.Count;i++){
+				if(openList[i].GetComponent<NodeData>().F<currentNode.GetComponent<NodeData>().F){
+					currentNode = openList[i];
+				}
+			}
+
+			Debug.Log("Current Node is: "+currentNode);
+
+			if(currentNode == NodeGoal){
+				//Celebrate great victory, make path back.
+				Debug.Log ("OpenList Count: "+openList.Count);
+				Debug.Log ("Victory!");
+				bakePath (NodeGoal, NodeFrom);
+				return cameFrom.ToArray();
+			}
+			openList.Remove (currentNode);
+			closedList.Add (currentNode);
+			Debug.Log ("Clos: "+printList(closedList));
+
+			//Process Neighbours.
+			parseNeighbours(currentNode.GetComponent<Node>());
+			Debug.Log ("Neighbours: "+printList(neighbours));
 			foreach(GameObject neighbour in neighbours){
-				if(!openList.Contains(neighbour)){
-					openList.Add(neighbour);
-					neighbour.GetComponent<NodeData>().parent = currentNode;
-					neighbour.GetComponent<NodeData>().G = currentG;
-					neighbour.GetComponent<NodeData>().F = neighbour.GetComponent<NodeData>().G+getHeuristic(neighbour, NodeGoal);
-				}
-				else{
-					if(currentG < neighbour.GetComponent<NodeData>().G ){
-						neighbour.GetComponent<NodeData>().G = currentG;
-						neighbour.GetComponent<NodeData>().parent = currentNode;
-						neighbour.GetComponent<NodeData>().F = neighbour.GetComponent<NodeData>().G+getHeuristic(neighbour, NodeGoal);
-					}
+				int tempG = gScore+1;
+				if(!openList.Contains(neighbour)||tempG<neighbour.GetComponent<NodeData>().G){
+					neighbour.GetComponent<NodeData>().parent=currentNode;
+					Debug.Log("The parent of "+neighbour+ "is "+neighbour.GetComponent<NodeData>().parent);
+					neighbour.GetComponent<NodeData>().G = tempG;
+					neighbour.GetComponent<NodeData>().F = neighbour.GetComponent<NodeData>().G+getHeuristic(neighbour,NodeGoal);
+					if(!openList.Contains(neighbour))openList.Add(neighbour);
 				}
 			}
-			foreach(GameObject Node in openList){
-				if(Node.GetComponent<NodeData>().F<currentNode.GetComponent<NodeData>().F){
-					currentNode = Node;
-				}
-			}
-			closedList.Add(currentNode);
+			Debug.Log ("OpenList Count: "+openList.Count);
+			Debug.Log ("Open: "+printList (openList));
 		}
-
-
+		Debug.Log ("Failure!");
+		return null;
 
 
 	}
 
+	void bakePath(GameObject goal, GameObject origin){
+		GameObject currentNode = goal;
+		cameFrom.Clear();
+		cameFrom.Add (goal);
+		for(int i=0;i<50;i++){
+		//while(currentNode.GetComponent<NodeData>().parent != origin){
+			cameFrom.Add(currentNode.GetComponent<NodeData>().parent);
+			currentNode = currentNode.GetComponent<NodeData>().parent;
+			if(currentNode == origin)break;
+		}
+		Debug.Log ("Return path: "+printList(cameFrom));
+	}
+
 	void parseNeighbours(Node input){
 		neighbours.Clear();
-		neighbours.Add (input.upNeighbour);
-		neighbours.Add (input.downNeighbour);
-		neighbours.Add (input.leftNeighbour);
-		neighbours.Add (input.rightNeighbour);
-
-		foreach(GameObject neighbour in neighbours){
-			if(neighbour==null || closedList.Contains(neighbour)){
-				neighbours.Remove (neighbour);
+		List<GameObject> result = input.getNeighbours();
+		for(int i=0;i<result.Count;i++){
+			if(closedList.Contains(result[i])){
+				result.Remove(result[i]);
 			}
 		}
+		neighbours = result;
+	}
+
+	string printList(List<GameObject> input){
+		string result = "";
+		foreach(GameObject item in input){
+			result+=(item+ " ");
+		}
+		return result;
 	}
 
 	public int getHeuristic(GameObject NodeFrom, GameObject NodeGoal){
@@ -67,4 +109,4 @@ using System.Collections.Generic;
 		result += (Mathf.Abs (goal.getY()-from.getY()));
 		return result;
 	}
-}*/
+}
