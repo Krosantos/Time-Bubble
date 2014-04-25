@@ -191,6 +191,17 @@ public class MapMaker : MonoBehaviour {
 						tilemap[(int)newTile.transform.position.x,(int)newTile.transform.position.y].mightBeWall = true;
 					}
 
+
+
+
+				}
+			}
+		}
+
+		for (int i = 0; i < 1000; i++){
+			for (int j = 0; j < 1000; j++){
+				if (tilemap[i,j].mightBeWall){
+
 					// if any adjacent tiles are empty, make another wall. helps with padding
 					Tile up = tilemap[i,j+1];
 					Tile down = tilemap[i,j-1];
@@ -232,8 +243,6 @@ public class MapMaker : MonoBehaviour {
 						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i+1,j-1), Quaternion.identity);
 						newTile.transform.parent = transform;
 					}
-
-
 				}
 			}
 		}
