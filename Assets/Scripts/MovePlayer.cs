@@ -30,15 +30,19 @@ public class MovePlayer : MonoBehaviour{
 
 		if (Input.GetKey(left)){
 			xmove = -1f;
+			gameObject.GetComponent<Animator>().SetInteger ("Direction", 1);
 		}
 		if (Input.GetKey(right)){
 			xmove = 1f;
+			gameObject.GetComponent<Animator>().SetInteger ("Direction", 3);
 		}
 		if (Input.GetKey(up)){
 			ymove = 1f;
+			gameObject.GetComponent<Animator>().SetInteger ("Direction", 0);
 		}
 		if (Input.GetKey(down)){
 			ymove = -1f;
+			gameObject.GetComponent<Animator>().SetInteger ("Direction", 2);
 		}
 
 		if ((Input.GetKey(up) || Input.GetKey(down)) && (Input.GetKey(left) || Input.GetKey(right) )){

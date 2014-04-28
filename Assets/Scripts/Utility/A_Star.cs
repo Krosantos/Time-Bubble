@@ -21,6 +21,7 @@ public class A_Star : MonoBehaviour {
 		openList.Add (NodeFrom);
 		int gScore = 0;
 		NodeFrom.GetComponent<NodeData>().F=int.MaxValue;
+		NodeFrom.GetComponent<NodeData>().G = 0;
 
 		int j =0;
 		while(openList.Count > 0){
