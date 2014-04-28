@@ -11,7 +11,7 @@ public class TestMob : MobBase {
 		targetRange = 19f;
 		engageRange = 5f;
 		resistRate = 1f;
-		regenRate = 1f;
+		regenRate = 0.1f;
 		accel = 10f;
 	}
 }

@@ -37,6 +37,10 @@ public class LightControl : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
 	}
 
+	public bool getLightOn(){
+		return beamOn;
+	}
+
 	void OnDestroy(){
 		Light2D.UnregisterEventListener(LightEventListenerType.OnStay, OnLightStay);
 		Light2D.UnregisterEventListener(LightEventListenerType.OnEnter, OnLightEnter);
