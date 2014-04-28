@@ -199,7 +199,7 @@ public class MobBase : MonoBehaviour {
 	public void Petrify(float compositeIntensity){
 		StopCoroutine("UnFreeze");
 		if(accelMod > 0f){
-			accelMod-=compositeIntensity*Time.deltaTime;
+			accelMod-=compositeIntensity*Time.deltaTime*2f;
 		}
 		if(accelMod < 0f){
 			accelMod = 0f;

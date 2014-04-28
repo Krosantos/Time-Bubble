@@ -8,6 +8,7 @@ public class KeyTrigger : MonoBehaviour {
 			if (!c.gameObject.GetComponent<MovePlayer>().hasKey){
 				c.gameObject.GetComponent<MovePlayer>().hasKey = true;
 				AudioManager.instance.Play(AudioManager.instance.pickupkey);
+				Destroy(gameObject);
 			}
 		}
 	}
