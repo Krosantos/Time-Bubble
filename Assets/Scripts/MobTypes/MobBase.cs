@@ -99,9 +99,11 @@ public class MobBase : MonoBehaviour {
 		gradColor = Color.Lerp (tintcolor, petColor,1-accelMod);
 		if(isPetrified){
 			gameObject.renderer.material.color = Color.black;
+			if (GetComponent<Animator>()) GetComponent<Animator>().speed = 0f;
 		}
 		else{
 			gameObject.renderer.material.color = gradColor;
+			if (GetComponent<Animator>()) GetComponent<Animator>().speed = Random.Range(.5f,1f);
 		}
 		
 		//Determine movetarget
