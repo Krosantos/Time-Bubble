@@ -78,24 +78,19 @@ public class Node : MonoBehaviour {
 		return isOn;
 	}
 
-	/*public GameObject getNextNode(GameObject lastNode){
+	public GameObject getNextNode(GameObject lastNode){
 		int randChoice;
 		GameObject result = lastNode;
-		if(neighbourCount == 1){
-			return result;
-		}
-		else{
-			randChoice = Random.Range(1,neighbourCount-1);
+		randChoice = Random.Range(1,neighbourCount);
 			result = neighbours[randChoice];
-		}
 		return result;
-	}*/
+	}
 
 	public List<GameObject> getNeighbours(){
 		return neighbours;
 	}
 
-	public GameObject getNextNode(GameObject lastNode){
+	/*public GameObject getNextNode(GameObject lastNode){
 		bool check = false;
 		int randChoice;
 		GameObject result = lastNode;
@@ -144,7 +139,7 @@ public class Node : MonoBehaviour {
 			}
 		}
 		return result;
-	}
+	}*/
 
 	public void mapNeighbours(){
 		upNeighbour = NodeMapGen.nodeMap[xCor,yCor+1];
