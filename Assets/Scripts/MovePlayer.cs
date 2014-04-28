@@ -30,19 +30,15 @@ public class MovePlayer : MonoBehaviour{
 
 		if (Input.GetKey(left)){
 			xmove = -1f;
-			gameObject.GetComponent<Animator>().SetInteger ("Direction", 1);
 		}
 		if (Input.GetKey(right)){
 			xmove = 1f;
-			gameObject.GetComponent<Animator>().SetInteger ("Direction", 3);
 		}
 		if (Input.GetKey(up)){
 			ymove = 1f;
-			gameObject.GetComponent<Animator>().SetInteger ("Direction", 0);
 		}
 		if (Input.GetKey(down)){
 			ymove = -1f;
-			gameObject.GetComponent<Animator>().SetInteger ("Direction", 2);
 		}
 
 		if ((Input.GetKey(up) || Input.GetKey(down)) && (Input.GetKey(left) || Input.GetKey(right) )){
@@ -54,5 +50,18 @@ public class MovePlayer : MonoBehaviour{
 		velocity.y = Mathf.Lerp(velocity.y, ymove * speed, Time.deltaTime * accel);
 
 		controller.Move(velocity*Time.deltaTime);
+
+		Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		Vector3 distance = target - transform.position;
+
+		if (Mathf.Abs(distance.normalized.y) > Mathf.Abs(distance.normalized.x)){
+			if (distance.normalized.y > 0) gameObject.GetComponent<Animator>().SetInteger ("Direction", 0);
+			else gameObject.GetComponent<Animator>().SetInteger ("Direction", 2);
+		}else{
+			if (distance.normalized.x > 0) gameObject.GetComponent<Animator>().SetInteger ("Direction", 3);
+			else gameObject.GetComponent<Animator>().SetInteger ("Direction", 1);
+		}
+
+
 	}
 }
