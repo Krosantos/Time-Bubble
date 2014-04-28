@@ -17,11 +17,14 @@ public class MovePlayer : MonoBehaviour{
 
 	public KeyCode up, down, left, right;
 
+	Animator spriteanimator;
+
 	// Use this for initialization
 	void Start () {
 		//baseSpeed = baseSpeed;
 		controller = GetComponent<CharacterController>();
 		hasKey = false;
+		spriteanimator = GetComponentInChildren<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -57,11 +60,11 @@ public class MovePlayer : MonoBehaviour{
 		Vector3 distance = target - transform.position;
 
 		if (Mathf.Abs(distance.normalized.y) > Mathf.Abs(distance.normalized.x)){
-			if (distance.normalized.y > 0) gameObject.GetComponent<Animator>().SetInteger ("Direction", 0);
-			else gameObject.GetComponent<Animator>().SetInteger ("Direction", 2);
+			if (distance.normalized.y > 0) spriteanimator.SetInteger ("Direction", 0);
+			else spriteanimator.SetInteger ("Direction", 2);
 		}else{
-			if (distance.normalized.x > 0) gameObject.GetComponent<Animator>().SetInteger ("Direction", 3);
-			else gameObject.GetComponent<Animator>().SetInteger ("Direction", 1);
+			if (distance.normalized.x > 0) spriteanimator.SetInteger ("Direction", 3);
+			else spriteanimator.SetInteger ("Direction", 1);
 		}
 
 
