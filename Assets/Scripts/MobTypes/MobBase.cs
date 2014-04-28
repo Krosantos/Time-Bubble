@@ -28,8 +28,7 @@ public class MobBase : MonoBehaviour {
 
 	public bool isPetrified = false;
 
-	public Material defMat;
-	public Material stoneMat;
+	Color tintcolor;
 	
 	
 	#region Get/Set Variables
@@ -79,6 +78,7 @@ public class MobBase : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag("Player");
 		nextNode = lockNode();
 		self = GetComponent<Rigidbody>();
+		tintcolor = renderer.material.color;
 		StartCoroutine ("updateState");
 		StartCoroutine ("UnStick");
 		StartCoroutine("NodeTrack");
@@ -95,10 +95,10 @@ public class MobBase : MonoBehaviour {
 		
 		//Check for death
 		if(isPetrified){
-			gameObject.renderer.material = stoneMat;
+			gameObject.renderer.material.color = Color.black;
 		}
 		else{
-			gameObject.renderer.material = defMat;
+			gameObject.renderer.material.color = tintcolor;
 		}
 		
 		//Determine movetarget
