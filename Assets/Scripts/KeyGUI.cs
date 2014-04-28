@@ -11,6 +11,6 @@ public class KeyGUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (m.hasKey) renderer.enabled = true;
+		if (m.hasKey) guiTexture.enabled = true;
 	}
 }

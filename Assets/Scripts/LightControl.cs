@@ -100,7 +100,15 @@ public class LightControl : MonoBehaviour {
 	}
 
 	void OnLightStay(Light2D l, GameObject g){
+
 		if (g.tag == "Enemy" && beamOn){
+			if (!g.renderer.isVisible){
+				if (audioSource.isPlaying) audioSource.Stop();
+				g.GetComponent<MobBase>().Recover();
+				g.transform.GetComponentInChildren<ParticleSystem>().Stop();
+				ScreenShake2D.SetShake(0f);
+				return;
+			}
 			float range = Mathf.Clamp(1f - ((g.transform.position - transform.position).magnitude / l.LightRadius), 0f, 1f);
 			float compositeintensity = range * intensity;
 			g.GetComponent<MobBase>().Petrify(compositeintensity);
