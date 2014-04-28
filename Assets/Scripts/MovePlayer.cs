@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MovePlayer : MonoBehaviour{
 	
-	public float speed = 10f;
+	public float baseSpeed = 10f;
 	public float jumpspeed = 3f;
 	public float accel = .5f;
 	
@@ -13,11 +13,13 @@ public class MovePlayer : MonoBehaviour{
 	private Vector3 velocity;
 	private float xmove;
 	private float ymove;
+	private float speed;
 
 	public KeyCode up, down, left, right;
 
 	// Use this for initialization
 	void Start () {
+		baseSpeed = baseSpeed;
 		controller = GetComponent<CharacterController>();
 		hasKey = false;
 	}

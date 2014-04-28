@@ -28,9 +28,8 @@ public class MobBase : MonoBehaviour {
 
 	public bool isPetrified = false;
 
-	Color tintcolor;
-	
-	
+	Color tintcolor, gradColor, petColor;
+
 	#region Get/Set Variables
 	
 	public float speed{
@@ -79,6 +78,7 @@ public class MobBase : MonoBehaviour {
 		nextNode = lockNode();
 		self = GetComponent<Rigidbody>();
 		tintcolor = renderer.material.color;
+		petColor = new Color(.4f,.4f,.4f);
 		StartCoroutine ("updateState");
 		StartCoroutine ("UnStick");
 		StartCoroutine("NodeTrack");
@@ -89,16 +89,19 @@ public class MobBase : MonoBehaviour {
 		if (accelMod <= 0f){
 			if (!isPetrified) AudioManager.instance.Play(AudioManager.instance.petrifysound);
 			isPetrified = true;
+			gameObject.layer = 13;
 		}else{
 			isPetrified = false;
+			gameObject.layer = 11;
 		}
 		
 		//Check for death
+		gradColor = Color.Lerp (tintcolor, petColor,1-accelMod);
 		if(isPetrified){
 			gameObject.renderer.material.color = Color.black;
 		}
 		else{
-			gameObject.renderer.material.color = tintcolor;
+			gameObject.renderer.material.color = gradColor;
 		}
 		
 		//Determine movetarget
