@@ -58,8 +58,10 @@ public class LightControl : MonoBehaviour {
 			ScreenShake2D.Shake(0f,0f);
 			if (beamOn){
 				AudioManager.instance.Play(AudioManager.instance.turnbeamon);
+				transform.parent.GetComponent<MovePlayer>().speed *= .5f;
 			}else{
 				AudioManager.instance.Play(AudioManager.instance.turnbeamoff);
+				transform.parent.GetComponent<MovePlayer>().speed *= 2f;
 			}
 
 		}
