@@ -91,7 +91,7 @@ public class LightControl : MonoBehaviour {
 
 	void OnLightEnter(Light2D l, GameObject g){
 		//Debug.Log(g.name);
-		if (g.tag == "Enemy" && beamOn){
+		if (g.tag == "Enemy" && beamOn && g.renderer.isVisible){
 			g.transform.GetComponentInChildren<ParticleSystem>().Play();
 			if (!audioSource.isPlaying) audioSource.Play();
 
