@@ -48,39 +48,39 @@ TextureImporter:
     - name: fml_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 32
-        height: 32
+        width: 28
+        height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 39
         y: 0
-        width: 32
-        height: 32
+        width: 23
+        height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 70
         y: 0
-        width: 32
-        height: 32
+        width: 23
+        height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 99
         y: 0
-        width: 32
-        height: 32
+        width: 25
+        height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_4
       rect:
         serializedVersion: 2
@@ -89,7 +89,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_5
       rect:
         serializedVersion: 2
@@ -98,7 +98,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
     - name: fml_6
       rect:
         serializedVersion: 2
@@ -107,6 +107,6 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 

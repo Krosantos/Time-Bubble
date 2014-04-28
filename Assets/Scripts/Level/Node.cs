@@ -81,7 +81,7 @@ public class Node : MonoBehaviour {
 	public GameObject getNextNode(GameObject lastNode){
 		int randChoice;
 		GameObject result = lastNode;
-		randChoice = Random.Range(1,neighbourCount);
+		randChoice = (int)Random.Range(0,neighbourCount);
 			result = neighbours[randChoice];
 		return result;
 	}
