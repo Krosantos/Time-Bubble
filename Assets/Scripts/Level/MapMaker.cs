@@ -10,7 +10,8 @@ public class MapMaker : MonoBehaviour {
 	public GameObject door;
 	public GameObject player;
 	public GameObject key;
-	public GameObject[] enemy;
+	public GameObject[] enemyTypes;
+	public static List<GameObject> enemy = new List<GameObject>(10);
 
 	public float turnchance = .1f;
 	public float turnaroundchance = .05f;
@@ -25,7 +26,7 @@ public class MapMaker : MonoBehaviour {
 	public int iterations = 112;
 
 	public float minEnemyDistance = 15f;
-	public float enemySpawnRate = .1f;  // likelihood of enemy spawning at any given floor tile
+	public static float enemySpawnRate = .05f;  // likelihood of enemy spawning at any given floor tile
 
 	public List<FloorMaker> floorMakers = new List<FloorMaker>();
 
@@ -38,6 +39,18 @@ public class MapMaker : MonoBehaviour {
 	void Awake () {
 
 		ScoreManager.currentlevel++;
+
+		if (ScoreManager.currentlevel == 1){
+			enemy.Add(enemyTypes[0]);
+			enemy.Add(enemyTypes[0]);
+			enemy.Add(enemyTypes[0]);
+			enemy.Add(enemyTypes[0]);
+			enemy.Add(enemyTypes[1]);
+		}
+		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[1]);
+		if (ScoreManager.currentlevel > 2) enemy.Add(enemyTypes[2]);
+
+		enemySpawnRate += .01f;
 
 		InitTileMap();
 
@@ -156,7 +169,7 @@ public class MapMaker : MonoBehaviour {
 					if (tileDistanceFromSpawn > minEnemyDistance){
 						float r = Random.Range(0f,1f);
 						if (r < enemySpawnRate){
-							int randint = Random.Range(0, enemy.Length);
+							int randint = Random.Range(0, enemy.Count);
 							Instantiate(enemy[randint], tileposition, Quaternion.identity);
 						}
 					}

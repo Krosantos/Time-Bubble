@@ -10,7 +10,7 @@ public class KeyGUI : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		if (m.hasKey) guiTexture.enabled = true;
 	}
 }
