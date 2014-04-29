@@ -33,8 +33,8 @@ public class KillOrBeKilled : MonoBehaviour {
 		Time.timeScale = .5f;
 		ScreenShake2D.Shake(.25f,.25f);
 		yield return new WaitForSeconds(.5f);
-		while (alpha < 1f){
-			alpha += Time.deltaTime;
+		while (alpha < .6f){
+			alpha += Time.deltaTime * .2f;
 			Mathf.Clamp01(alpha);
 			camfadetex.color = new Color(0f,0f,0f,alpha);
 			yield return 0;
