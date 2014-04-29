@@ -16,6 +16,7 @@ public class KillOrBeKilled : MonoBehaviour {
 			}else{
 				camfadetex = GameObject.FindGameObjectWithTag("CamFade").guiTexture;
 				c.gameObject.GetComponent<MovePlayer>().enabled = false;
+				c.gameObject.GetComponentInChildren<Light2D>().enabled = false;
 				StartCoroutine(EndGame());
 			}
 		}
