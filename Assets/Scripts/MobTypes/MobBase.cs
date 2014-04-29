@@ -86,6 +86,7 @@ public class MobBase : MonoBehaviour {
 	
 	public virtual void Update(){
 
+	
 		if (accelMod <= 0f){
 			if (!isPetrified) AudioManager.instance.Play(AudioManager.instance.petrifysound);
 			isPetrified = true;
