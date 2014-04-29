@@ -225,7 +225,7 @@ public class MobBase : MonoBehaviour {
 			if(recoverTime > 1){
 				while (t > 0){
 					t -= Time.deltaTime * 2f;
-					transform.position = baseposition + Vector3.right * Mathf.Sin(Time.deltaTime * 100f) * .3f;
+					transform.position = baseposition + new Vector3(Mathf.Sin(Time.time * 100f)-.5f, 0f, 0f) * .1f;
 					yield return 0;
 				}
 				accelMod = 1;
