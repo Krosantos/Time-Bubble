@@ -11,7 +11,7 @@ public class MapMaker : MonoBehaviour {
 	public GameObject player;
 	public GameObject key;
 	public GameObject[] enemyTypes;
-	public static List<GameObject> enemy = new List<GameObject>(10);
+	public static List<GameObject> enemy;
 
 	public float turnchance = .1f;
 	public float turnaroundchance = .05f;
@@ -26,7 +26,7 @@ public class MapMaker : MonoBehaviour {
 	public int iterations = 112;
 
 	public float minEnemyDistance = 15f;
-	public static float enemySpawnRate = .05f;  // likelihood of enemy spawning at any given floor tile
+	public static float enemySpawnRate;  // likelihood of enemy spawning at any given floor tile
 
 	public List<FloorMaker> floorMakers = new List<FloorMaker>();
 
@@ -41,6 +41,8 @@ public class MapMaker : MonoBehaviour {
 		ScoreManager.currentlevel++;
 
 		if (ScoreManager.currentlevel == 1){
+			enemy = new List<GameObject>(10);
+			enemySpawnRate = .05f;
 			enemy.Add(enemyTypes[0]);
 			enemy.Add(enemyTypes[0]);
 			enemy.Add(enemyTypes[0]);
