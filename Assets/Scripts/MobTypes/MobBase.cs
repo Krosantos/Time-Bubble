@@ -216,11 +216,18 @@ public class MobBase : MonoBehaviour {
 
 	IEnumerator UnFreeze(){
 		recoverTime = 0;
+		float t = 1f;
+		Vector3 baseposition = transform.position;
 		for(;;){
 			if(recoverTime < 1){
 				recoverTime += regenRate*Time.deltaTime;
 			}
 			if(recoverTime > 1){
+				while (t > 0){
+					t -= Time.deltaTime * 2f;
+					transform.position = baseposition + Vector3.right * Mathf.Sin(Time.deltaTime * 100f) * .3f;
+					yield return 0;
+				}
 				accelMod = 1;
 				recoverTime = 1;
 				Suicide("UnFreeze");
