@@ -264,7 +264,8 @@ public class MapMaker : MonoBehaviour {
 
 
 					// fix weird diagonals?
-					if (upleft.tile == forwardwall || upright.tile == forwardwall){
+					if (upleft.mightBeWall && !left.isEmpty && !left.mightBeWall 
+					    || upright.mightBeWall && !right.isEmpty && !right.mightBeWall){
 						GameObject newTile = (GameObject)Instantiate(topwall, new Vector2(i,j+1), Quaternion.identity);
 						newTile.transform.parent = transform;
 					}
