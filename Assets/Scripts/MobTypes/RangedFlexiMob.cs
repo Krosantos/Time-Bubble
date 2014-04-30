@@ -84,7 +84,7 @@ public class RangedFlexiMob : MobBase {
 	protected virtual IEnumerator shoot(){
 		GameObject temp;
 		for(;;){
-			if(isShooting){
+			if(isShooting && !isPetrified){
 				temp = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
 				temp.GetComponent<SlowOrb>().direction = (player.transform.position-transform.position);
 			}
