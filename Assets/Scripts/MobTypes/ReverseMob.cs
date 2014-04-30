@@ -4,6 +4,7 @@ using System.Collections;
 public class ReverseMob : MobBase {
 
 	public Sprite sleep, awake;
+	private bool primed =false;
 
 	public override void Start ()
 	{
@@ -18,6 +19,46 @@ public class ReverseMob : MobBase {
 		accel = 10f;
 		accelMod = 0f;
 	}
+
+	public override void Update (){
+		
+		
+		if (accelMod <= 0f){
+			if (!isPetrified && primed) AudioManager.instance.Play(AudioManager.instance.petrifysound);
+			isPetrified = true;
+			primed = true;
+			gameObject.layer = 13;
+		}else{
+			isPetrified = false;
+			gameObject.layer = 11;
+		}
+		
+		//Check for death
+		gradColor = Color.Lerp (tintcolor, petColor,1-accelMod);
+		if(isPetrified){
+			gameObject.renderer.material.color = Color.black;
+			if (GetComponent<Animator>()) GetComponent<Animator>().speed = 0f;
+		}
+		else{
+			gameObject.renderer.material.color = gradColor;
+			if (GetComponent<Animator>()) GetComponent<Animator>().speed = Random.Range(.5f,1f);
+		}
+		
+		//Determine movetarget
+		switch (AIState){
+		case AIStates.Idle:
+			Idle ();
+			break;
+		case AIStates.Pursue:
+			Pursue();
+			break;
+		case AIStates.Attack:
+			Pursue();
+			break;
+		}
+		Move ();
+	}
+	
 
 	protected override IEnumerator UnFreeze (){
 		for(;;){
