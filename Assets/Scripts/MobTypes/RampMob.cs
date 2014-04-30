@@ -3,20 +3,30 @@ using System.Collections;
 
 public class RampMob : MobBase {
 
+	bool primed = false;
 
 	public override void Start ()
 	{
 		base.Start();
-		speed = 6f;
+		speed = 3f;
 		health = 2f;
 		detectRange = 20f;
 		targetRange = 19f;
 		engageRange = 5f;
-		resistRate = 1f;
+		resistRate = .75f;
 		regenRate = 0.2f;
 		accel = 10f;
 	}
-	
+
+	public override void Update ()
+	{
+		if(accelMod<=0){
+			primed = true;
+			Debug.Log ("I AM PRIMED");
+		}
+		base.Update ();
+	}
+
 	protected override IEnumerator UnFreeze (){
 		recoverTime = 0;
 		float t = 1f;
@@ -34,9 +44,11 @@ public class RampMob : MobBase {
 				accelMod = 1;
 				recoverTime = 1;
 				Suicide("UnFreeze");
-				speed = 18f;
-				resistRate = 0.33f;
-				gameObject.GetComponent<Animator>().SetBool("isBurning", true);
+				if(primed){
+					speed = 15f;
+					resistRate = 0.33f;
+					gameObject.GetComponent<Animator>().SetBool("isBurning", true);
+				}
 			}
 			yield return 0;
 		}

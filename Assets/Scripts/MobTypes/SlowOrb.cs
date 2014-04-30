@@ -16,9 +16,9 @@ public class SlowOrb : MonoBehaviour {
 		gameObject.GetComponent<Rigidbody>().MovePosition (moveVec+transform.position);
 	}
 
-	void OnCollisionEnter(Collision coll){
+	void OnTriggerEnter(Collider  coll){
 		if(coll.gameObject.tag == "Player"){
-			coll.gameObject.GetComponent<MovePlayer>().slowEffect();
+			coll.gameObject.GetComponent<MovePlayer>().slowHook();
 		}
 		GameObject.Destroy (gameObject);
 	}

@@ -68,9 +68,14 @@ public class MovePlayer : MonoBehaviour{
 		}
 	}
 
+	public void slowHook(){
+		StartCoroutine ("slowEffect");
+	}
+
 	public IEnumerator slowEffect(){
-		speed /= 2;
+		this.speed /= 2;
+		Debug.Log ("AM SLOW");
 		yield return new WaitForSeconds(2f);
-		speed*= 2;
+		this.speed*= 2;
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections;
 public class RangedFlexiMob : MobBase {
 
 	public GameObject projectile;
+	protected bool isShooting;
 	public float Speed = 1f;
 	public float DetectRange = 1f;
 	public float TargetRange = 1f;
@@ -14,6 +15,7 @@ public class RangedFlexiMob : MobBase {
 	
 	public override void Start (){
 		base.Start();
+		StartCoroutine ("shoot");
 		speed = Speed;
 		health = 2f;
 		detectRange = DetectRange;
@@ -63,27 +65,29 @@ public class RangedFlexiMob : MobBase {
 
 	protected override void Idle ()
 	{
-		StopCoroutine ("shoot");
+		isShooting = false;
 		base.Idle ();
 	}
 
 	protected override void Pursue ()
 	{
-		StopCoroutine ("shoot");
+		isShooting = false;
 		base.Pursue ();
 	}
 
 	protected override void Attack ()
 	{	
 		target = transform.position;
-		StartCoroutine ("shoot");
+		isShooting = true;
 	}
 
 	protected virtual IEnumerator shoot(){
 		GameObject temp;
 		for(;;){
-			temp = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
-			temp.GetComponent<SlowOrb>().direction = (player.transform.position-transform.position);
+			if(isShooting){
+				temp = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
+				temp.GetComponent<SlowOrb>().direction = (player.transform.position-transform.position);
+			}
 			yield return new WaitForSeconds(2.5f);
 		}
 	}
