@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class MobBase : MonoBehaviour {
-	
-	static private GameObject player;
+
+	static protected GameObject player;
 	public LayerMask collideMask;
 	private float _health;
 	private float _detectRange; //Range at which mob loses you
@@ -19,16 +19,16 @@ public class MobBase : MonoBehaviour {
 	private Vector3 moveVec;
 	private Vector3 debugVec;
 	protected Vector3 target;
-	private float recoverTime;
+	protected float recoverTime;
 	private float _speed;
 	private float _accel;
 	private float _regenRate;
 	private float _resistRate; //Unintuitively, 1 means no resist, 0 means immune.
-	private float accelMod=1;
+	protected float accelMod=1;
 
 	public bool isPetrified = false;
 
-	Color tintcolor, gradColor, petColor;
+	protected Color tintcolor, gradColor, petColor;
 
 	#region Get/Set Variables
 	
@@ -137,17 +137,17 @@ public class MobBase : MonoBehaviour {
 		}
 
 	}
-	
+
 	protected virtual void Pursue(){
 
 		target = (player.transform.position-transform.position);
 	}
 	
-	protected void Attack(){
+	protected virtual void Attack(){
 
 	}
 
-	void Move(){
+	protected void Move(){
 
 		moveVec = target.normalized*speed*Time.deltaTime*accelMod;
 		float moveDist = moveVec.magnitude;
@@ -202,7 +202,7 @@ public class MobBase : MonoBehaviour {
 	}
 	#endregion
 	#region Light Effects
-	public void Petrify(float compositeIntensity){
+	public virtual void Petrify(float compositeIntensity){
 		StopCoroutine("UnFreeze");
 		if(accelMod > 0f){
 			accelMod-=compositeIntensity*Time.deltaTime*2f*_resistRate;
@@ -211,11 +211,11 @@ public class MobBase : MonoBehaviour {
 			accelMod = 0f;
 		}
 	}
-	public void Recover(){
+	public virtual void Recover(){
 		StartCoroutine("UnFreeze");
 	}
 
-	IEnumerator UnFreeze(){
+	protected virtual IEnumerator UnFreeze(){
 		recoverTime = 0;
 		float t = 1f;
 		Vector3 baseposition = transform.position;
@@ -250,7 +250,7 @@ public class MobBase : MonoBehaviour {
 		}
 	}*/
 
-	void Suicide(string targetCR){
+	protected void Suicide(string targetCR){
 		StopCoroutine(targetCR);
 	}
 

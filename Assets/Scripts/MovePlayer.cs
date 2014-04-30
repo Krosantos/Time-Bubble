@@ -66,7 +66,11 @@ public class MovePlayer : MonoBehaviour{
 			if (distance.normalized.x > 0) spriteanimator.SetInteger ("Direction", 3);
 			else spriteanimator.SetInteger ("Direction", 1);
 		}
+	}
 
-
+	public IEnumerator slowEffect(){
+		speed /= 2;
+		yield return new WaitForSeconds(2f);
+		speed*= 2;
 	}
 }

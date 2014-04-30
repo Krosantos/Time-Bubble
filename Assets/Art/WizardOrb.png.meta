@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5da242115cf9b4bd4844a9c082f6fcb8
+guid: b99b93e9044e3eb4f984cea723d2bd19
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -35,7 +35,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings:
@@ -45,58 +45,40 @@ TextureImporter:
     compressionQuality: 50
   spriteSheet:
     sprites:
-    - name: more stuff_0
+    - name: WizardOrb_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: more stuff_1
+    - name: WizardOrb_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 8
         y: 0
-        width: 32
-        height: 32
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: more stuff_2
+    - name: WizardOrb_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 16
         y: 0
-        width: 32
-        height: 32
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: more stuff_3
+    - name: WizardOrb_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 24
         y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-    - name: more stuff_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-    - name: more stuff_5
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
   spritePackingTag: 

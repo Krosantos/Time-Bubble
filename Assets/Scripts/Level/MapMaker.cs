@@ -50,7 +50,10 @@ public class MapMaker : MonoBehaviour {
 			enemy.Add(enemyTypes[1]);
 		}
 		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[1]);
-		if (ScoreManager.currentlevel > 2) enemy.Add(enemyTypes[2]);
+		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[2]);
+		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[3]);
+		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[4]);
+		if (ScoreManager.currentlevel > 1) enemy.Add(enemyTypes[5]);
 
 		enemySpawnRate += .01f;
 
