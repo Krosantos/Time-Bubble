@@ -139,6 +139,7 @@ public class MobBase : MonoBehaviour {
 	}
 
 	protected virtual void Pursue(){
+		nextNode = null;
 
 		target = (player.transform.position-transform.position);
 	}
